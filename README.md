@@ -8,6 +8,12 @@ Metapolis's official repository contains two primary components: the SQL Sail in
 
 It requires the branch [build-docker/metapolis](https://github.com/researchspace/researchspace/tree/build-docker/metapolis). Also available as a docker image (e.g., `docker pull researchspace/platform-ci:metapolis`) See [Docker Hub](https://hub.docker.com/r/researchspace/platform-ci/tags).
 
+## Project structure
+
+## Installing
+
+## Example and use cases
+
 ## Acknowledgements
 
 Funded by the National Endowment for the Humanities (NEH) as part of the Digital Humanities Advancement Grants. 
