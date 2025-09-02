@@ -1,0 +1,158 @@
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+        }
+        .header p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        .map-container {
+            width: 100%;
+            height: 80vh;
+            min-height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .building-info {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .building-info h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .building-info .function {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .function.religious { background: #e8f5e8; color: #2e7d32; }
+        .function.government { background: #e3f2fd; color: #1565c0; }
+        .function.cultural { background: #fce4ec; color: #c2185b; }
+        .function.commercial { background: #fff3e0; color: #ef6c00; }
+    </style>
+
+<div class="header">
+    <h1>Metapolis Florence Buildings</h1>
+    <p>Interactive map showing historic buildings in Florence, Italy</p>
+</div>
+
+<div class="map-container">
+    <semantic-context repository="metapolis">
+        <semantic-map
+            id="florence-buildings-map"
+            query='
+                PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+                PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+
+                SELECT * WHERE {
+                    ?root rs_sql_sail:hasQueryId "all_buildings";	
+                          metapolis_sql:building_id ?building_id;
+                          metapolis_sql:name ?name;
+                          metapolis_sql:function ?function;
+                          metapolis_sql:wkt ?wkt
+                }
+            '
+            map-options='{
+                "center": [43.7731, 11.2560],
+                "zoom": 14,
+                "maxZoom": 18,
+                "minZoom": 10
+            }'
+            feature-style='{
+                "color": "#e74c3c",
+                "weight": 2,
+                "opacity": 0.8,
+                "fillColor": "#e74c3c",
+                "fillOpacity": 0.3
+            }'
+            cluster-options='{
+                "enabled": false
+            }'
+            popup-template='
+                <div class="building-info">
+                    <h3>{{name}}</h3>
+                    <span class="function {{function}}">{{function}}</span>
+                    <p><strong>Building ID:</strong> {{building_id}}</p>
+                </div>
+            '
+            tooltip-template='{{name}} ({{function}})'
+        >
+            <!-- Base map layer - OpenStreetMap -->
+            <tiles-layer
+                url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                name="OpenStreetMap"
+                identifier="osm"
+                level="basemap"
+                max-zoom="19"
+            >
+            </tiles-layer>
+
+            <!-- Alternative base map - CartoDB Positron (lighter style) -->
+            <tiles-layer
+                url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                name="CartoDB Light"
+                identifier="cartodb-light"
+                level="basemap"
+                max-zoom="19"
+            >
+            </tiles-layer>
+
+            <!-- Satellite imagery option -->
+            <tiles-layer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                name="Satellite"
+                identifier="satellite"
+                level="basemap"
+                max-zoom="19"
+            >
+            </tiles-layer>
+        </semantic-map>
+    </semantic-context>
+</div>
+
+<div style="margin-top: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h3>About This Map</h3>
+    <p>This interactive map displays historic buildings in Florence, Italy, stored in the Metapolis PostgreSQL database with PostGIS. The data includes:</p>
+    <ul>
+        <li><strong>Religious Buildings:</strong> Duomo di Firenze, Basilica di Santa Croce</li>
+        <li><strong>Government Buildings:</strong> Palazzo Vecchio</li>
+        <li><strong>Cultural Buildings:</strong> Palazzo Pitti</li>
+        <li><strong>Commercial Buildings:</strong> Ponte Vecchio</li>
+    </ul>
+    <p>Click on any building marker to see detailed information. Use the layer control in the top-right corner to switch between different base maps.</p>
+    
+    <h4>Technical Details</h4>
+    <ul>
+        <li>Data source: PostgreSQL with PostGIS extension</li>
+        <li>Query service: geosql.ttl configuration</li>
+        <li>Map component: ResearchSpace SemanticMap</li>
+        <li>Repository: metapolis</li>
+    </ul>
+</div>
+

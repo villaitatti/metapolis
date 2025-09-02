@@ -1,0 +1,261 @@
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX ephedra: <http://www.researchspace.org/resource/system/ephedra#>
+PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+PREFIX : <http://www.researchspace.org/resource/system/repository#>
+
+:metapolis a ephedra:Service ;
+	<http://www.openrdf.org/config/sail#sailType> "researchspace:SQL" ;
+	rdfs:label "Metapolis Buildings SQL Service - A wrapper for querying Florence buildings data." ;
+	ephedra:hasSPARQLPattern (
+		[
+			sp:subject :_results ;
+			sp:predicate rs_sql_sail:hasQueryId ;
+			sp:object :_queryId
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:wkt ;
+			sp:object :_wkt
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:minX ;
+			sp:object :_MinX
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:minY ;
+			sp:object :_MinY
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:maxX ;
+			sp:object :_MaxX
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:maxY ;
+			sp:object :_MaxY
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:building_id ;
+			sp:object :_building_id
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:name ;
+			sp:object :_name
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate metapolis_sql:function ;
+			sp:object :_function
+		]
+	) ;
+	spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "query ID" ;
+		spl:predicate :_queryId ;
+		spl:valueType xsd:string
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Minimum X (Longitude)" ;
+		spl:predicate :_MinX ;
+	    spl:valueType xsd:float
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Minimum Y (Latitude)" ;
+		spl:predicate :_MinY ;
+		spl:valueType xsd:float
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Maximum X (Longitude)" ;
+		spl:predicate :_MaxX ;
+		spl:valueType xsd:float
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Maximum Y (Latitude)" ;
+		spl:predicate :_MaxY ;
+		spl:valueType xsd:float
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Building function filter" ;
+		spl:predicate :_function ;
+		spl:valueType xsd:string
+  ] ;
+  spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "Building name filter" ;
+		spl:predicate :_name ;
+		spl:valueType xsd:string
+  ] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Row index: will be assigned a random blank node" ;
+		spl:predicate :_results ;
+		spl:valueType rdfs:Resource
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Geometry column (WKT format)" ;
+		spl:predicate :_wkt ;
+		spl:valueType xsd:string
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Building ID" ;
+		spl:predicate :_building_id ;
+		spl:valueType xsd:integer
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Building name" ;
+		spl:predicate :_name ;
+		spl:valueType xsd:string
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Building function/category" ;
+		spl:predicate :_function ;
+		spl:valueType xsd:string
+	] ;
+
+	# Basic query to get all buildings
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "all_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings ORDER BY name" ;
+	] ;
+
+	# Query buildings within a bounding box (for map viewport)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_in_bbox" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE ST_Intersects(geom, ST_MakeEnvelope(?MinX, ?MinY, ?MaxX, ?MaxY, 4326)) ORDER BY name" ;
+	] ;
+
+	# Query buildings by function
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_by_function" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE function = ?function ORDER BY name" ;
+	] ;
+
+	# Query religious buildings in Florence
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "florence_religious_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE function = 'Religious' ORDER BY name" ;
+	] ;
+
+	# Query government buildings in Florence
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "florence_government_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE function = 'Government' ORDER BY name" ;
+	] ;
+
+	# Query cultural buildings in Florence
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "florence_cultural_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE function = 'Cultural' ORDER BY name" ;
+	] ;
+
+	# Query commercial buildings in Florence
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "florence_commercial_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE function = 'Commercial' ORDER BY name" ;
+	] ;
+
+	# Query buildings within Florence historic center (approximate bounding box)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "florence_historic_center" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE ST_Intersects(geom, ST_MakeEnvelope(11.240, 43.760, 11.270, 43.785, 4326)) ORDER BY name" ;
+	] ;
+
+	# Query buildings near Duomo (within 500m radius)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_near_duomo" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt, ST_Distance(ST_Transform(geom, 3857), ST_Transform(ST_GeomFromText('POINT(11.2560 43.7731)', 4326), 3857)) as distance_meters FROM metapolis.buildings WHERE ST_DWithin(ST_Transform(geom, 3857), ST_Transform(ST_GeomFromText('POINT(11.2560 43.7731)', 4326), 3857), 500) ORDER BY distance_meters" ;
+	] ;
+
+	# Query buildings near Palazzo Vecchio (within 300m radius)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_near_palazzo_vecchio" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt, ST_Distance(ST_Transform(geom, 3857), ST_Transform(ST_GeomFromText('POINT(11.2558 43.7696)', 4326), 3857)) as distance_meters FROM metapolis.buildings WHERE ST_DWithin(ST_Transform(geom, 3857), ST_Transform(ST_GeomFromText('POINT(11.2558 43.7696)', 4326), 3857), 300) ORDER BY distance_meters" ;
+	] ;
+
+	# Query buildings by name pattern (case-insensitive search)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_by_name_pattern" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE LOWER(name) LIKE LOWER(CONCAT('%', ?name, '%')) ORDER BY name" ;
+	] ;
+
+	# Query buildings with their centroid coordinates
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_with_centroids" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt, ST_X(ST_Centroid(geom)) as centroid_x, ST_Y(ST_Centroid(geom)) as centroid_y FROM metapolis.buildings ORDER BY name" ;
+	] ;
+
+	# Query buildings with area calculation
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "buildings_with_area" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt, ST_Area(ST_Transform(geom, 3857)) as area_sqm FROM metapolis.buildings ORDER BY area_sqm DESC" ;
+	] ;
+
+	# Summary query - count buildings by function
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "building_summary_by_function" ;
+		rs_sql_sail:text "SELECT function, COUNT(*) as building_count FROM metapolis.buildings GROUP BY function ORDER BY building_count DESC" ;
+	] ;
+
+	# Query specific building by ID
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "building_by_id" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE id = ?building_id" ;
+	] ;
+
+	# Query buildings within Oltrarno district (south of Arno river)
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "oltrarno_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE ST_Y(ST_Centroid(geom)) < 43.768 ORDER BY name" ;
+	] ;
+
+	# Query buildings north of Arno river
+	rs_sql_sail:includesSQLQuery
+	[
+		rs_sql_sail:hasQueryId "north_arno_buildings" ;
+		rs_sql_sail:text "SELECT id as building_id, name, function, ST_AsText(geom) as wkt FROM metapolis.buildings WHERE ST_Y(ST_Centroid(geom)) >= 43.768 ORDER BY name" ;
+	] .
