@@ -1,0 +1,261 @@
+<semantic-form
+  persistence='{"type": "sparql", "targetInsertGraphIri": "http://www.researchspace.org/resource/g/data", "repository":"default"}'
+  new-subject-template='http://metapolis.com/resource/person/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
+  fields='[
+    {
+      "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "deletePattern" : "DELETE { \n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value\n  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+      "selectPattern" : "SELECT DISTINCT ?value WHERE {\n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.\n  }",
+      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+      "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+      "defaultValues" : [ ],
+      "id" : "type",
+      "label" : "rdf type",
+      "insertPattern" : "INSERT { \n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value\n    } WHERE {}",
+      "order" : 0
+    },
+    {
+      "iri" : "http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type",
+      "deletePattern" : "DELETE { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value } WHERE { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value }",
+      "selectPattern" : "SELECT ?value WHERE {\n  $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> ?value.\n}",
+      "range" : [ "http://www.cidoc-crm.org/cidoc-crm/E55_Type" ],
+      "label" : "for P2",
+      "insertPattern" : "INSERT { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value} WHERE {}",
+      "treePatterns" : {
+        "type" : "simple",
+        "schemePattern" : "?item a crm:E55_Type .",
+        "relationPattern" : "?item crm:P127_has_broader_term ?parent ."
+      },
+      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object" ],
+      "defaultValues" : [ ],
+      "maxOccurs" : "1",
+      "id" : "has_type",
+      "order" : 0
+    },                       
+    {
+      "iri" : "http://www.researchspace.org/pattern/general/rdfs:label",
+      "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+      "selectPattern" : "SELECT ?value WHERE {\n  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.\n}",
+      "minOccurs" : "1",
+      "range" : [ ],
+      "label" : "has label",
+      "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+      "defaultValues" : [ ],
+      "maxOccurs" : "1",
+      "id" : "has_label",
+      "order" : 0
+    },
+    {
+      "id": "person_name",
+      "label": "Name (Given Name)",
+      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/given_name\")) AS ?e41) }",
+      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/given_name\")) AS ?e41) }"
+    },
+    {
+      "id": "person_surname",
+      "label": "Surname (Family Name)",
+      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/family_name\")) AS ?e41) }",
+      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/family_name\")) AS ?e41) }"
+    },
+    {
+      "id": "person_patronymic",
+      "label": "Patronymic",
+      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/patronymic\")) AS ?e41) }",
+      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/patronymic\")) AS ?e41) }"
+    },
+    {
+      "id": "person_birth_date",
+      "label": "Birth Date",
+      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/person_birth_date> $value } WHERE {}",
+      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/person_birth_date> $value }",
+      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/person_birth_date> $value } WHERE { $subject <http://metapolis.com/ontology/person_birth_date> $value }"
+    },
+    {
+      "id": "person_death_date",
+      "label": "Death Date",
+      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/person_death_date> $value } WHERE {}",
+      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/person_death_date> $value }",
+      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/person_death_date> $value } WHERE { $subject <http://metapolis.com/ontology/person_death_date> $value }"
+    }
+  ]'
+  [[> rsp:FormDefaults]]
+>
+
+  <semantic-form-hidden-input for="type" default-values='["http://metapolis.com#Person"]'></semantic-form-hidden-input>
+  <semantic-form-hidden-input for="has_type" default-value="http://metapolis.com/resource/type/Person"></semantic-form-hidden-input>
+
+  <div class="form-scroll-area">
+    <div class="container-fluid">
+
+      <bs-tabs class="person-tabs form-main-window" id="person-tabs">
+        
+        <!-- Personal Details Tab -->
+        <bs-tab event-key="1" title="Personal Details">
+          
+          <bs-row>
+            <bs-col md="6" sm="12">
+              <div id="person_name">
+                <semantic-form-text-input 
+                  label="Name (Given Name)" 
+                  placeholder="Enter the person's first name..." 
+                  for="person_name"
+                  description="The person's given or first name">
+                </semantic-form-text-input>
+              </div>
+            </bs-col>
+            <bs-col md="6" sm="12">
+              <div id="person_surname">
+                <semantic-form-text-input 
+                  label="Surname (Family Name)" 
+                  placeholder="Enter the person's surname..." 
+                  for="person_surname"
+                  description="The person's family name or surname">
+                </semantic-form-text-input>
+              </div>
+            </bs-col>
+          </bs-row>
+
+          <bs-row>
+            <bs-col md="12" sm="12">
+              <div id="person_patronymic">
+                <semantic-form-text-input 
+                  label="Patronymic" 
+                  placeholder="Enter the patronymic name..." 
+                  for="person_patronymic"
+                  description="Name derived from the father's name (e.g., son of, daughter of)">
+                </semantic-form-text-input>
+              </div>
+            </bs-col>
+          </bs-row>
+
+        </bs-tab>
+
+        <!-- Life Dates Tab -->
+        <bs-tab event-key="2" title="Life Dates">
+          
+          <bs-row>
+            <bs-col lg="12" md="12" sm="12">
+              <div id="person_birth_date">
+                <semantic-form-composite-input 
+                  label="Birth Date"
+                  for='person_birth_date' 
+                  new-subject-template="http://metapolis.com/resource/birth/{{{{raw}}}}{{UUID}}{{{{/raw}}}}" 
+                  fields='[
+                    {
+                      "id": "time_primitive_day",
+                      "label": "Day",
+                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_day> $value } WHERE {}",
+                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_day> $value }",
+                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_day> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_day> $value }"
+                    },
+                    {
+                      "id": "time_primitive_month",
+                      "label": "Month",
+                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_month> $value } WHERE {}",
+                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_month> $value }",
+                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_month> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_month> $value }"
+                    },
+                    {
+                      "id": "time_primitive_year",
+                      "label": "Year",
+                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_year> $value } WHERE {}",
+                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_year> $value }",
+                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_year> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_year> $value }"
+                    }
+                  ]'>
+                  
+                  <semantic-form-hidden-input for="type" default-value="http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span"></semantic-form-hidden-input>
+                  
+                  <bs-row>
+                    <bs-col sm="4">
+                      <semantic-form-text-input label="Day" placeholder="DD" for="time_primitive_day"></semantic-form-text-input>
+                    </bs-col>
+                    <bs-col sm="4">
+                      <semantic-form-text-input label="Month" placeholder="MM" for="time_primitive_month"></semantic-form-text-input>
+                    </bs-col>
+                    <bs-col sm="4">
+                      <semantic-form-text-input label="Year" placeholder="YYYY" for="time_primitive_year"></semantic-form-text-input>
+                    </bs-col>
+                  </bs-row>
+
+                </semantic-form-composite-input>
+              </div>
+            </bs-col>
+          </bs-row>
+
+          <bs-row>
+            <bs-col lg="12" md="12" sm="12">
+              <div id="person_death_date">
+                
+              </div>
+            </bs-col>
+          </bs-row>
+
+        </bs-tab>
+
+      </bs-tabs>
+
+      <!-- Auto-generate label from name and surname -->
+      <semantic-form-hidden-input for="has_label" default-value="{{person_name.value}} {{person_surname.value}}"></semantic-form-hidden-input>
+
+    </div>
+  </div>
+
+  <semantic-form-errors></semantic-form-errors>
+
+  [[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Metapolis Person{{/if}}']]
+
+</semantic-form>
+
+<style>
+  .form-scroll-area {
+    padding: 20px;
+  }
+  
+  .page-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .page-header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  .page-header .lead {
+    color: #7f8c8d;
+    margin-bottom: 0;
+  }
+  
+  .person-tabs {
+    margin-top: 20px;
+  }
+  
+  .person-tabs .tab-content {
+    padding: 20px 0;
+  }
+  
+  .form-actions {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    text-align: right;
+  }
+  
+  .form-actions .btn {
+    margin-left: 10px;
+  }
+  
+  .semantic-form-text-input,
+  .semantic-form-composite-input {
+    margin-bottom: 20px;
+  }
+</style>
