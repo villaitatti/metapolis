@@ -1,5 +1,7 @@
 # Metapolis
 
+[Wiki documentation](https://github.com/villaitatti/metapolis/wiki)
+
 ## Introduction & Overview
 
 Metapolis is a geospatial visualization platform that enables researchers to manage and visualize complex geospatial data. It integrates two primary components: the SQL Sail integration and the Advanced Semantic Map. These components allow Metapolis to connect a PostgreSQL database with PostGIS for geospatial queries and analysis with the ResearchSpace semantic framework.
