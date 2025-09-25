@@ -1,6 +1,7 @@
+
 <semantic-form
   persistence='{"type": "sparql", "targetInsertGraphIri": "http://www.researchspace.org/resource/g/data", "repository":"default"}'
-  new-subject-template='https://metapolis.com/resource/building/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
+  new-subject-template='http://metapolis.com/resource/building/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
   fields='[
     {
       "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
@@ -50,53 +51,146 @@
       "order" : 0
     },
     {
-      "iri" : "http://www.researchspace.org/pattern/system/entity/formRecord",
-      "deletePattern" : "DELETE { \n  $subject crm:P129i_is_subject_of $value .\n  $value crm:P129_is_about $subject .\n} WHERE { \n  $subject crm:P129i_is_subject_of $value .\n  $value crm:P129_is_about $subject .\n  $value a crmdig:D1_Digital_Object .\n  $value crm:P2_has_type <http://www.researchspace.org/resource/system/vocab/resource_type/entity_form_record> .  \n}",
-      "selectPattern" : "SELECT DISTINCT ?value WHERE {\n  $subject crm:P129i_is_subject_of $value .\n  $value a crmdig:D1_Digital_Object .\n  $value crm:P2_has_type <http://www.researchspace.org/resource/system/vocab/resource_type/entity_form_record> .  \n}",
-      "minOccurs" : "1",
-      "range" : [ "http://www.cidoc-crm.org/extensions/crmdig/D1_Digital_Object" ],
-      "label" : "Entity form record",
-      "insertPattern" : "INSERT { \n  $subject crm:P129i_is_subject_of $value .\n  $value crm:P129_is_about $subject .\n} WHERE {}",
-      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_range ?range.
+        ?range a metapolis_ontology:Source.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Source" ],
       "defaultValues" : [ ],
-      "maxOccurs" : "1",
-      "id" : "entity_formRecord",
+      "id" : "entity_is_domain_of_relation_source",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.} WHERE {}",
       "order" : 0
-    },                                              
-    {
-      "id": "building_name",
-      "label": "Name",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/building_name> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/building_name> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/building_name> $value } WHERE { $subject <http://metapolis.com/ontology/building_name> $value }"
     },
     {
-      "id": "building_function",
-      "label": "Function",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/building_function> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/building_function> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/building_function> $value } WHERE { $subject <http://metapolis.com/ontology/building_function> $value }"
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_domain ?domain.
+        ?domain a metapolis_ontology:Source.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Source" ],
+      "defaultValues" : [ ],
+      "id" : "entity_is_range_of_relation_source",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.} WHERE {}",
+      "order" : 0
     },
     {
-      "id": "building_coordinates",
-      "label": "Coordinates",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/building_coordinates> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/building_coordinates> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/building_coordinates> $value } WHERE { $subject <http://metapolis.com/ontology/building_coordinates> $value }"
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_range ?range.
+        ?range a metapolis_ontology:Event.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Event" ],
+      "defaultValues" : [ ],
+      "id" : "entity_is_domain_of_relation_event",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.} WHERE {}",
+      "order" : 0
     },
     {
-      "id": "building_description",
-      "label": "Description",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/building_description> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/building_description> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/building_description> $value } WHERE { $subject <http://metapolis.com/ontology/building_description> $value }"
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_domain ?domain.
+        ?domain a metapolis_ontology:Event.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Event" ],
+      "defaultValues" : [ ],
+      "id" : "entity_is_range_of_relation_event",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.} WHERE {}",
+      "order" : 0
+    },
+    {
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_range ?range.
+        ?range a metapolis_ontology:Person.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Person" ],
+      "defaultValues" : [ ],
+      "id" : "entity_is_domain_of_relation_person",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_domain_of $value.
+        $value metapolis_ontology:has_domain $subject.} WHERE {}",
+      "order" : 0
+    },
+    {
+      "deletePattern" : "DELETE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      } WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.
+      }",
+      "selectPattern" : "SELECT ?value ?label WHERE {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_domain ?domain.
+        ?domain a metapolis_ontology:Person.
+      }",
+      "domain" : [ ],
+      "range" : [ "http://metapolis.com#Person" ],
+      "defaultValues" : [ ],
+      "id" : "entity_is_range_of_relation_person",
+      "label" : "entity",
+      "insertPattern" : "INSERT {
+        $subject metapolis_ontology:is_range_of $value.
+        $value metapolis_ontology:has_range $subject.} WHERE {}",
+      "order" : 0
     }
   ]'
+  [[> rsp:FormDefaults]]
 >
-
-
-  <semantic-form-errors></semantic-form-errors>
 
   <semantic-form-hidden-input for="type" default-values='["http://www.cidoc-crm.org/cidoc-crm/E22_Man-Made_Object"]'></semantic-form-hidden-input>
   <semantic-form-hidden-input for="has_type" default-value="http://metapolis.com/resource/type/Building"></semantic-form-hidden-input>
@@ -104,97 +198,629 @@
   <div class="form-scroll-area">
     <div class="container-fluid">
       
-      
       <div class="page-header">
         <h1>Create New Building</h1>
-        <p class="lead">Enter information about a historical building or structure</p>
+        <p class="lead">Enter information about a building or structure</p>
       </div>
 
-      <bs-tabs class="building-tabs form-main-window" id="building-tabs">
+      <bs-row>
+        <bs-col md="12" sm="12">
+          <div id="building_name">
+            <semantic-form-text-input 
+              label="Name" 
+              placeholder="Enter the building name..." 
+              for="has_label"
+              description="The name or title of the building">
+            </semantic-form-text-input>
+          </div>
+        </bs-col>
+      </bs-row>
+
+      <bs-tabs id="entity_relation_tabs" default-active-key="11">
+
+        <bs-tab event-key="11" title="Events">
+          <bs-row>
+            <bs-col lg="6">
+
+              <strong>Outgoing relations</strong>
+
+              <semantic-form-composite-input
+                label="Outgoing relation"
+                render-header="false"
+                for="entity_is_domain_of_relation_event"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_range",
+                    "id" : "relation_has_range_event",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value a metapolis_ontology:Event.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Event" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_range_event'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Event' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop an event from another frame or</div>
+                          <div><span class='text-link'>click to create a new Event.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Event nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Event">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+            <bs-col lg="6">
+
+              <strong>Incoming relations</strong>
+
+              <semantic-form-composite-input
+                label="Incoming relation"
+                render-header="false"
+                for="entity_is_range_of_relation_event"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_domain",
+                    "id" : "relation_has_domain_event",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value a metapolis_ontology:Event.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Event" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_domain_event'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Event' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop an event from another frame or</div>
+                          <div><span class='text-link'>click to create a new Event.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Event nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Event">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+          </bs-row>
+
+        </bs-tab>
+
+        <bs-tab event-key="12" title="People">
+          <bs-row>
+            <bs-col lg="6">
+
+              <strong>Outgoing relations</strong>
+
+              <semantic-form-composite-input
+                label="Outgoing relation"
+                render-header="false"
+                for="entity_is_domain_of_relation_person"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_range",
+                    "id" : "relation_has_range_person",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value a metapolis_ontology:Person.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Person" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_range_person'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Person' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop a person from another frame or</div>
+                          <div><span class='text-link'>click to create a new Person.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Person nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Person">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+            <bs-col lg="6">
+
+              <strong>Incoming relations</strong>
+
+              <semantic-form-composite-input
+                label="Incoming relation"
+                render-header="false"
+                for="entity_is_range_of_relation_person"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_domain",
+                    "id" : "relation_has_domain_person",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value a metapolis_ontology:Person.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Person" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_domain_person'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Person' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop a person from another frame or</div>
+                          <div><span class='text-link'>click to create a new Person.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Person nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Person">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+          </bs-row>
+
+        </bs-tab>
+
+        <bs-tab event-key="13" title="Sources">
+          <bs-row>
+            <bs-col lg="6">
+
+              <strong>Outgoing relations</strong>
+
+              <semantic-form-composite-input
+                label="Outgoing relation"
+                render-header="false"
+                for="entity_is_domain_of_relation_source"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_range",
+                    "id" : "relation_has_range_source",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_range $value.
+                      $value a metapolis_ontology:Source.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_range $value.
+                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Source" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_range_source'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Source' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop a source from another frame or</div>
+                          <div><span class='text-link'>click to create a new Source.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Source nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Source">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+            <bs-col lg="6">
+
+              <strong>Incoming relations</strong>
+
+              <semantic-form-composite-input
+                label="Incoming relation"
+                render-header="false"
+                for="entity_is_range_of_relation_source"
+                new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
+                parent-subject="{{subject}}"
+                fields='[
+                  {
+                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                    "id" : "type",
+                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
+                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
+                    "defaultValues" : [ ],
+                    
+                    "label" : "rdf type",
+                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
+                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
+                    "minOccurs" : "1",
+                    "range" : [ ],
+                    "label" : "has label",
+                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
+                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "id" : "has_label",
+                    "order" : 0
+                  },
+                  {
+                    "iri": "http://metapolis.com#has_domain",
+                    "id" : "relation_has_domain_source",
+                    "deletePattern" : "DELETE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    } WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.
+                    }",
+                    "selectPattern" : "SELECT ?value ?label WHERE {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value a metapolis_ontology:Source.
+                    }",
+                    "minOccurs" : "1",
+                    "insertPattern" : "INSERT {
+                      $subject metapolis_ontology:has_domain $value.
+                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
+                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
+                    "range" : [ "http://metapolis.com#Source" ],
+                    "defaultValues" : [ ],
+                    "maxOccurs" : "1",
+                    "order" : 0
+                  }
+                ]'
+              >
+
+              
+              <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
+
+                <bs-row>
+                  <bs-col lg-offset="4" lg="4">
+                    <semantic-form-drag-and-drop-input
+                      for='relation_has_domain_source'
+                      placeholder-item-template="
+                        <div class='image-uploader'>
+                          <div><rs-icon icon-type='rounded' icon-name='Source' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div>Drag and Drop a source from another frame or</div>
+                          <div><span class='text-link'>click to create a new Source.</span></div>
+                        </div>"
+                      nested-form-template='{{{{raw}}}}{{> metapolis_forms:Source nested=true editable=true mode="new" }}{{{{/raw}}}}'
+                      label="Source">
+                    </semantic-form-drag-and-drop-input>
+                  </bs-col>
+                </bs-row>
+
+                <bs-row>
+                  <bs-col lg="12" md="12">
+                    <semantic-form-text-input label="Notes" for="has_label"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
+              
+              </semantic-form-composite-input>
+
+            </bs-col>
+
+          </bs-row>
+
+        </bs-tab>
+
         
-        <!-- Basic Information Tab -->
-        <bs-tab event-key="1" title="Basic Information">
-          
-          <bs-row>
-            <bs-col md="12" sm="12">
-              <div id="building_name">
-                <semantic-form-text-input 
-                  label="Name" 
-                  placeholder="Enter the building name..." 
-                  for="building_name"
-                  description="The name or title of the building">
-                </semantic-form-text-input>
-              </div>
-            </bs-col>
-          </bs-row>
-
-          <bs-row>
-            <bs-col md="6" sm="12">
-              <div id="building_function">
-                <semantic-form-select-input 
-                  label="Function" 
-                  placeholder="Select the building function..." 
-                  for="building_function"
-                  description="The primary purpose or use of the building"
-                  options='[
-                    {"value": "religious", "label": "Religious"},
-                    {"value": "government", "label": "Government"},
-                    {"value": "cultural", "label": "Cultural"},
-                    {"value": "commercial", "label": "Commercial"},
-                    {"value": "residential", "label": "Residential"},
-                    {"value": "educational", "label": "Educational"},
-                    {"value": "military", "label": "Military"},
-                    {"value": "industrial", "label": "Industrial"},
-                    {"value": "other", "label": "Other"}
-                  ]'>
-                </semantic-form-select-input>
-              </div>
-            </bs-col>
-            <bs-col md="6" sm="12">
-              <div id="building_coordinates">
-                <semantic-form-text-input 
-                  label="Coordinates" 
-                  placeholder="Enter coordinates (e.g., 43.7731, 11.2560)" 
-                  for="building_coordinates"
-                  description="Geographic coordinates in decimal degrees (latitude, longitude)">
-                </semantic-form-text-input>
-              </div>
-            </bs-col>
-          </bs-row>
-
-        </bs-tab>
-
-        <!-- Description Tab -->
-        <bs-tab event-key="2" title="Description">
-          
-          <bs-row>
-            <bs-col md="12" sm="12">
-              <div id="building_description">
-                <semantic-form-textarea-input 
-                  label="Description" 
-                  placeholder="Enter a detailed description of the building..." 
-                  for="building_description"
-                  rows="8"
-                  description="A comprehensive description of the building's architecture, history, and significance">
-                </semantic-form-textarea-input>
-              </div>
-            </bs-col>
-          </bs-row>
-
-        </bs-tab>
-
-        [[> rsp:FormMetadataTab]]
-
       </bs-tabs>
-
-      <!-- Auto-generate label from name -->
-      <semantic-form-hidden-input for="has_label" default-value="{{building_name.value}}"></semantic-form-hidden-input>
 
     </div>
   </div>
 
+  <semantic-form-errors></semantic-form-errors>
 
-[[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Metapolis Building{{/if}}']] 
+[[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Metapolis Building{{/if}}']]
 
 </semantic-form>
 
@@ -219,37 +845,8 @@
     margin-bottom: 0;
   }
   
-  .building-tabs {
-    margin-top: 20px;
-  }
-  
-  .building-tabs .tab-content {
-    padding: 20px 0;
-  }
-  
-  .form-actions {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-    text-align: right;
-  }
-  
-  .form-actions .btn {
-    margin-left: 10px;
-  }
-  
   .semantic-form-text-input,
-  .semantic-form-select-input,
-  .semantic-form-textarea-input {
+  .semantic-form-tree-picker-input {
     margin-bottom: 20px;
-  }
-  
-  .semantic-form-textarea-input textarea {
-    min-height: 150px;
-    resize: vertical;
-  }
-  
-  .semantic-form-select-input select {
-    width: 100%;
   }
 </style>
