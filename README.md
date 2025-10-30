@@ -1,6 +1,6 @@
 # Metapolis
 
-## 🚀 Quickstart Guide
+## Quickstart Guide
 
 Get Metapolis up and running in just a few steps:
 
