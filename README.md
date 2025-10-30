@@ -1,5 +1,7 @@
 # Metapolis
 
+For detailed technical specifications and additional documentation, see [the wiki](https://github.com/villaitatti/metapolis/wiki).
+
 ## Quickstart Guide
 
 
