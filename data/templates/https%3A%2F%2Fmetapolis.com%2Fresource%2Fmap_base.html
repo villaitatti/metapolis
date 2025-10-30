@@ -1,0 +1,35 @@
+<div id="mainContainer">
+  <div id="mapNavigatorContainer" class="flexrows">
+    <div class="map-container">
+      <semantic-context repository="ephedra">
+
+
+<div style='height: 95vw;'>
+  <semantic-map
+    query='
+      PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+          PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+          PREFIX metapolis_ontology: <http://metapolis.com#>
+          SELECT ?wkt ?function ?name ?building_id ?s WHERE {
+            SERVICE <http://www.researchspace.org/resource/system/repository/federation#metapolis> {
+              ?s rs_sql_sail:hasQueryId "all_buildings";
+                metapolis_sql:building_id ?building_id;
+                metapolis_sql:name ?name;
+                metapolis_sql:function ?function;
+                metapolis_sql:wkt ?wkt.
+            }
+            ?building a metapolis_ontology:Building;
+                      metapolis_ontology:related_feature ?name
+          }'
+    tuple-template='<b>{{description.value}}</b><br><a href="{{link.value}}" target="_blank">Open in wikidata</a>'
+  ></semantic-map>
+</div>
+      
+
+      </semantic-context>
+    </div>
+  </div>
+</div>
+
+
+          

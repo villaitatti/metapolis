@@ -1,0 +1,84 @@
+<div id="mainContainer">
+  <div id="mapNavigatorContainer" class="flexrows">
+    <div class="map-container">
+      <semantic-context repository="ephedra">
+
+        <div style="width: 100%; height: 95vh; display: flex; position: relative">
+          <!-- Sidebar component -->
+          <semantic-map-controls
+                                 id="my-map-controls"
+                                 target-map-id="my-map"
+                                 features-options-enabled="true"
+                                 features-taxonomies="function"
+                                 features-color-taxonomies="function"
+                                 features-colors-palette='{
+        "Religious":"rgba(46,125,50,0.9)",
+        "Government":"rgba(21,101,192,0.9)",
+        "Cultural":"rgba(194,24,91,0.9)",
+        "Commercial":"rgba(239,108,0,0.9)"
+      }'
+                                 render-template="{{> feature-details}}"
+                                 template-mapping='{
+      "selectedFeature": "{{> feature-details}}"
+    }'>
+            <template id="feature-details">
+              <!-- Custom feature details template -->
+              <div>
+                <h3>{{name}}</h3>
+                <p>Function: {{function}}</p>
+                <p>ID: {{building_id}}</p>
+              </div>
+            </template>
+          </semantic-map-controls>
+
+          <!-- Map component -->
+          <div style="flex: 1; position: relative">
+            <semantic-context repository="metapolis">
+              <semantic-map-advanced
+                                     id="my-map"
+                                     target-controls='["my-map-controls"]'
+                                     feature-selection-targets='["my-map-controls"]'
+                                     map-options='{"crs":"EPSG:4326", "center": [43.7731, 11.2560], "zoom": 14}'
+                                     selected-feature-style='{
+            "color": "rgba(0, 128, 255, 1)",
+            "borderColor": "black",
+            "borderWidth": 2
+          }'
+                                     query='
+          PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+          PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+          PREFIX metapolis_ontology: <http://metapolis.com#>
+          SELECT ?wkt ?function ?name ?building_id ?s WHERE {
+            SERVICE <http://www.researchspace.org/resource/system/repository/federation#metapolis> {
+              ?s rs_sql_sail:hasQueryId "all_buildings";
+                metapolis_sql:building_id ?building_id;
+                metapolis_sql:name ?name;
+                metapolis_sql:function ?function;
+                metapolis_sql:wkt ?wkt.
+            }
+            ?building a metapolis_ontology:Building;
+                      metapolis_ontology:related_feature ?name
+          }
+            '>
+<tiles-layer
+                thumbnail='/assets/images/groad.jpg'
+                url='http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}'
+                identifier='GRoadmap'
+                name='Google Roadmap'
+                level='basemap'
+                author="Google"
+                location=""
+                year="2023">
+            </tiles-layer>
+
+
+                <!-- Add additional tile layers as needed -->
+              </semantic-map-advanced>
+            </semantic-context>
+          </div>
+        </div>
+
+      </semantic-context>
+    </div>
+  </div>
+</div>

@@ -51,6 +51,30 @@
       "order" : 0
     },
     {
+      "autosuggestionPattern" : "
+      PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#> 
+      PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#> 
+      SELECT ?value ?label WHERE { 
+        SERVICE <http://www.researchspace.org/resource/system/repository/federation#metapolis> { 
+          ?s rs_sql_sail:hasQueryId \"all_buildings\"; 
+            metapolis_sql:building_id ?building_id; 
+            metapolis_sql:name ?name; 
+            metapolis_sql:function ?function; 
+            metapolis_sql:wkt ?wkt
+        }
+        BIND(?name as ?label)
+        BIND(?building_id as ?value)
+        FILTER REGEX(STR(?label), \"?token\", \"i\")
+      } LIMIT 100", 
+      "deletePattern" : "DELETE { $subject metapolis_ontology:related_feature $value } WHERE { $subject metapolis_ontology:related_feature $value }",
+      "selectPattern" : "SELECT ?value WHERE { $subject metapolis_ontology:related_feature ?value. }",
+      "minOccurs" : "1",
+      "label" : "has related feature",
+      "insertPattern" : "INSERT { $subject metapolis_ontology:related_feature $value} WHERE {}",
+      "maxOccurs" : "1",
+      "id" : "related_feature"
+    },
+    {
       "deletePattern" : "DELETE {
         $subject metapolis_ontology:is_domain_of $value.
         $value metapolis_ontology:has_domain $subject.
@@ -198,10 +222,12 @@
   <div class="form-scroll-area">
     <div class="container-fluid">
       
+      {{#unless node}}
       <div class="page-header">
         <h1>Create New Building</h1>
         <p class="lead">Enter information about a building or structure</p>
       </div>
+      {{/unless}}
 
       <bs-row>
         <bs-col md="12" sm="12">
@@ -215,6 +241,15 @@
           </div>
         </bs-col>
       </bs-row>
+
+      <semantic-context repository="ephedra">
+        <bs-row>
+          <bs-col md="12" sm="12">
+            <semantic-form-autocomplete-input for='related_feature'>
+            </semantic-form-autocomplete-input>
+          </bs-col>
+        </bs-row>
+      </semantic-context>
 
       <bs-tabs id="entity_relation_tabs" default-active-key="11">
 

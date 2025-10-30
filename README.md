@@ -2,7 +2,16 @@
 
 ## Quickstart Guide
 
+
+
 Get Metapolis up and running in just a few steps:
+
+### Step 0: Add the app
+
+1. Execute a Researchspace instance
+2. Add the app to the instance
+
+See the [Official RS documentation](https://github.com/researchspace/researchspace).
 
 ### Step 1: Import Resource Configurations
 
@@ -26,9 +35,6 @@ Follow the comprehensive database setup guide at [metapolis_setup repository](ht
 2. **Follow the database setup instructions** in the repository's README.md:
    - Configure environment variables using the `.env.template`
    - Launch PostgreSQL with PostGIS using Docker Compose
-   - Initialize the database with sample Florence buildings data
-
-3. **Test the database connection** with the provided verification commands
 
 ### Step 3: Test Database Queries
 
@@ -47,7 +53,39 @@ Follow the comprehensive database setup guide at [metapolis_setup repository](ht
    }
    ```
 
-### Step 4: Explore Metapolis
+3. **Configure Metapolis with Ephedra**: To enable querying Metapolis data from outside the "metapolis" repository:
+   - Navigate to **System Configurations** → **Repositories**
+   - Find the `fedsail:member` configuration
+   - Append this configuration after the last element (note the comma is important):
+   ```
+   , [
+         ephedra:delegateRepositoryID "metapolis";
+         ephedra:serviceReference <http://www.researchspace.org/resource/system/repository/federation#metapolis>
+       ]
+   ```
+   - Update the configuration to save changes
+
+4. **Test Federated Query**: Now you can query using the **ephedra** repository:
+   ```sparql
+   PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+   PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+
+   SELECT * WHERE {
+     SERVICE <http://www.researchspace.org/resource/system/repository/federation#metapolis> {
+       ?s rs_sql_sail:hasQueryId "all_buildings";
+          metapolis_sql:building_id ?building_id;
+          metapolis_sql:name ?name;
+          metapolis_sql:function ?function;
+          metapolis_sql:wkt ?wkt
+     }
+   }
+   ```
+
+   This federated query allows you to access Metapolis data from outside the "metapolis" repository, enabling broader integration with other data sources in your ResearchSpace instance.
+
+### Step 4: Create new Buildings with Metapolis and connect them to the features in PostGIS
+
+### Next steps
 
 - **Create Entities**: Use the Finder sidebar to create new Events, People, Buildings, and Sources
 - **Visualize Data**: Access map visualization components
