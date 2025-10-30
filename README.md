@@ -1,5 +1,60 @@
 # Metapolis
 
+## 🚀 Quickstart Guide
+
+Get Metapolis up and running in just a few steps:
+
+### Step 1: Import Resource Configurations
+
+1. **Navigate to Data Import**: Go to `resource/Admin:DataImportExport` or click the settings button (⚙️) → "Data Import & Download"
+2. **Download Configuration Files**: Get the files from the [`metapolis_setup/configurations`](https://github.com/villaitatti/metapolis_setup/tree/main/configurations) folder
+3. **Import Files**: Upload both configuration files with "Keep source named graphs" checked:
+   - `Metapolis_Ontology.trig` (ontology definitions)
+   - `Metapolis_Entity.trig` (entity configurations)
+4. **Verify Import**: Check the Finder sidebar for Metapolis entities (Event, Person, Building, Source)
+
+### Step 2: Setup Database
+
+Follow the comprehensive database setup guide at [metapolis_setup repository](https://github.com/villaitatti/metapolis_setup):
+
+1. **Clone the setup repository**:
+   ```bash
+   git clone https://github.com/villaitatti/metapolis_setup.git
+   cd metapolis_setup
+   ```
+
+2. **Follow the database setup instructions** in the repository's README.md:
+   - Configure environment variables using the `.env.template`
+   - Launch PostgreSQL with PostGIS using Docker Compose
+   - Initialize the database with sample Florence buildings data
+
+3. **Test the database connection** with the provided verification commands
+
+### Step 3: Test Database Queries
+
+1. **Access SPARQL Endpoint**: Navigate to `/sparql` and select the "metapolis" repository
+2. **Run Test Query**:
+   ```sparql
+   PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
+   PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
+
+   SELECT * WHERE {
+     ?s rs_sql_sail:hasQueryId "all_buildings";
+        metapolis_sql:building_id ?building_id;
+        metapolis_sql:name ?name;
+        metapolis_sql:function ?function;
+        metapolis_sql:wkt ?wkt
+   }
+   ```
+
+### Step 4: Explore Metapolis
+
+- **Create Entities**: Use the Finder sidebar to create new Events, People, Buildings, and Sources
+- **Visualize Data**: Access map visualization components
+- **Link Sources**: Connect archival sources to geographical locations
+
+---
+
 ## Introduction & Overview
 
 Metapolis is a geospatial visualization platform that enables researchers to manage and visualize complex geospatial data. It integrates two primary components: the SQL Sail integration and the Advanced Semantic Map. These components allow Metapolis to connect a PostgreSQL database with PostGIS for geospatial queries and analysis with the ResearchSpace semantic framework.
@@ -64,19 +119,39 @@ Follow the setup for the [basic configuration](https://github.com/researchspace/
 
 Verify the installation by accessing the ResearchSpace platform at `http://localhost:10214` or the server IP address.
 
-### Step 2: Add Metapolis to Researchspace
+### Step 2: Database Setup
 
-...
+For the database setup, follow the comprehensive guide in the [metapolis_setup repository](https://github.com/villaitatti/metapolis_setup):
+
+1. **Clone the setup repository**:
+   ```bash
+   git clone https://github.com/villaitatti/metapolis_setup.git
+   cd metapolis_setup
+   ```
+
+2. **Follow Step 1: Database Setup** in the repository's README.md:
+   - **Environment Configuration**: Copy `.env.template` to `.env` and configure your database credentials
+   - **Launch Database**: Use Docker Compose to start PostgreSQL with PostGIS
+   - **Initialize Data**: Automatic setup of PostGIS, schema creation, and sample Florence buildings data
+   - **Verify Setup**: Test database connection and data integrity
+
+3. **Repository Configuration**: Update your ResearchSpace repository configuration to connect to the database using the credentials from your `.env` file
+
+The setup repository provides:
+- **Complete Docker environment** with PostgreSQL 15 + PostGIS 3.3
+- **Environment variable configuration** for secure credential management
+- **Sample Florence buildings dataset** with realistic geospatial data
+- **Comprehensive verification commands** to ensure proper setup
 
 ### Step 3: Prerequisites and Setup
 
-Before using Metapolis, you need to set up the required infrastructure:
+Before using Metapolis, ensure you have completed:
 
-1. **Database Setup**: PostgreSQL with PostGIS extension
-2. **Knowledge Platform**: ResearchSpace platform configuration  
-3. **Sample Data**: Florence buildings dataset
+1. **Database Setup**: PostgreSQL with PostGIS extension (see Step 2 above)
+2. **Knowledge Platform**: ResearchSpace platform configuration
+3. **Sample Data**: Florence buildings dataset (included in database setup)
 
-**For detailed setup instructions, see the comprehensive setup guide in the `metapolis_setup` directory.**
+**For detailed setup instructions, see the comprehensive setup guide in the [metapolis_setup repository](https://github.com/villaitatti/metapolis_setup).**
 
 ### Step 4: Service Configuration
 

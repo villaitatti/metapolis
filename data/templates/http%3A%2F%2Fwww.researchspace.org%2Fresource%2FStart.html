@@ -1,0 +1,493 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="quickstart-content" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        
+        <h1>Metapolis Quickstart Guide</h1>
+
+        <p>Get Metapolis up and running in just a few steps. This guide will help you configure your ResearchSpace instance to work with Metapolis geospatial data visualization.</p>
+
+        <div class="alert alert-info" role="alert">
+          <strong>Full Documentation:</strong> For comprehensive documentation, visit <a href="https://github.com/villaitatti/metapolis" target="_blank" class="alert-link">https://github.com/villaitatti/metapolis</a>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-container">
+          <h2>Table of Contents</h2>
+          <ol class="toc-list">
+            <li><a href="#step1">Step 1: Import Resource Configurations</a>
+              <ul>
+                <li><a href="#step1-1">1.1 Navigate to Data Import</a></li>
+                <li><a href="#step1-2">1.2 Download Configuration Files</a></li>
+                <li><a href="#step1-3">1.3 Import Configuration Files</a></li>
+                <li><a href="#step1-4">1.4 Verify Configuration Import</a></li>
+                <li><a href="#step1-5">1.5 Understanding the Configuration</a></li>
+              </ul>
+            </li>
+            <li><a href="#step2">Step 2: Setup Database</a>
+              <ul>
+                <li><a href="#step2-1">2.1 Clone Setup Repository</a></li>
+                <li><a href="#step2-2">2.2 Follow Database Setup Guide</a></li>
+                <li><a href="#step2-3">2.3 Service Configuration</a></li>
+              </ul>
+            </li>
+            <li><a href="#step3">Step 3: Test Database Queries</a>
+              <ul>
+                <li><a href="#step3-1">3.1 Access SPARQL Endpoint</a></li>
+                <li><a href="#step3-2">3.2 Test Query</a></li>
+              </ul>
+            </li>
+            <li><a href="#step4">Step 4: Explore Metapolis</a></li>
+            <li><a href="#next-steps">Next Steps</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+          </ol>
+        </div>
+
+        <h2 id="step1">Step 1: Import Resource Configurations</h2>
+
+        <p>First, we need to add the resource configurations that define the main Metapolis entity types.</p>
+
+        <h3 id="step1-1">1.1 Navigate to Data Import</h3>
+        <p>Go to the Data Import & Export page using one of these methods:</p>
+        <ul>
+          <li><strong>Direct URL:</strong> Navigate to <code>resource/Admin:DataImportExport</code></li>
+          <li><strong>Via Settings:</strong> Click the settings button (cog icon) in the top right, then select the second panel "Data Import & Download"</li>
+        </ul>
+
+        <h3 id="step1-2">1.2 Download Configuration Files</h3>
+        <p>Download the configuration files from the Metapolis setup repository:</p>
+        <div class="alert alert-info" role="alert">
+          <strong>Configuration Files:</strong> Get the files from <code>metapolis_setup/configurations</code> folder in the GitHub repository.
+        </div>
+
+        <h4>Configuration Files Overview</h4>
+        <p>The <code>configurations/</code> folder contains two essential files:</p>
+        
+        <div class="config-file-details">
+          <h5>Metapolis_Entity.trig</h5>
+          <p>This file contains the complete set of Metapolis entity configurations, including:</p>
+          <ul>
+            <li><strong>Entity Definitions:</strong> Configurations for all four main Metapolis entities:
+              <ul>
+                <li><code>Metapolis_Building</code> - Building entity configuration</li>
+                <li><code>Metapolis_Event</code> - Event entity configuration</li>
+                <li><code>Metapolis_Person</code> - Person entity configuration</li>
+                <li><code>Metapolis_Source</code> - Source entity configuration</li>
+              </ul>
+            </li>
+            <li><strong>Form Connections:</strong> Links each entity to its corresponding semantic form:
+              <ul>
+                <li>Building → <code>metapolis_forms:Building</code></li>
+                <li>Event → <code>metapolis_forms:Event</code></li>
+                <li>Person → <code>metapolis_forms:Person</code></li>
+                <li>Source → <code>metapolis_forms:Source</code></li>
+              </ul>
+            </li>
+            <li><strong>Ontology Mappings:</strong> Connects entities to their ontology classes</li>
+            <li><strong>Navigation Integration:</strong> Configures entities to appear in the ResearchSpace Finder interface</li>
+            <li><strong>Search Configuration:</strong> Sets up list view for entity browsing</li>
+            <li><strong>Metadata Tracking:</strong> Records creation and modification history using CIDOC-CRM</li>
+          </ul>
+
+          <h5>Metapolis_Ontology.trig</h5>
+          <p>This file defines the Metapolis ontology structure:</p>
+          <ul>
+            <li><strong>Base Entity:</strong> <code>metapolis_ontology:Metapolis_Entity</code> - The root class for all Metapolis entities</li>
+            <li><strong>Entity Classes:</strong> Four main entity types that inherit from the base entity:
+              <ul>
+                <li><code>metapolis_ontology:Building</code> - Represents physical structures</li>
+                <li><code>metapolis_ontology:Event</code> - Represents historical events</li>
+                <li><code>metapolis_ontology:Person</code> - Represents historical persons</li>
+                <li><code>metapolis_ontology:Source</code> - Represents documentary sources</li>
+              </ul>
+            </li>
+            <li><strong>OWL Compliance:</strong> Proper OWL ontology structure with class hierarchies</li>
+            <li><strong>Multilingual Labels:</strong> English labels for all entity types</li>
+            <li><strong>Namespace Definition:</strong> Uses <code>http://metapolis.com#</code> as the base namespace</li>
+          </ul>
+        </div>
+
+        <h3 id="step1-3">1.3 Import Configuration Files</h3>
+        <ol>
+          <li>On the Data Import & Download page, locate the file upload area</li>
+          <li><strong>Important:</strong> Check the <strong>"Keep source named graphs"</strong> checkbox to ensure readability in the graph database</li>
+          <li>Upload both configuration files from the <code>configurations/</code> folder:
+            <ul>
+              <li><strong>First:</strong> Upload <code>Metapolis_Ontology.trig</code> (defines the ontology structure)</li>
+              <li><strong>Second:</strong> Upload <code>Metapolis_Entity.trig</code> (defines entity configurations)</li>
+              <li>You can drag and drop each file into the upload area, or click to select and upload them individually</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="alert alert-info" role="alert">
+          <strong>Import Order:</strong> Import the ontology file first, then the entity configurations. This ensures proper dependency resolution.
+        </div>
+
+        <h3 id="step1-4">1.4 Verify Configuration Import</h3>
+        <p>After importing the configurations:</p>
+        <ol>
+          <li>Go to the home page by clicking the "Home" link in the breadcrumbs (top left)</li>
+          <li>Open the Finder sidebar (top left)</li>
+          <li>You should now see the Metapolis entity types:
+            <ul>
+              <li><strong>Event</strong> - Historical events and activities</li>
+              <li><strong>Person</strong> - People and actors</li>
+              <li><strong>Building</strong> - Architectural structures</li>
+              <li><strong>Source</strong> - Archival sources and documents</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="alert alert-info" role="alert">
+          <strong>Success!</strong> You have successfully imported the main Metapolis entity configurations and ontology. The system now includes:
+          <ul class="mb-0 mt-2">
+            <li>Complete entity type definitions with CIDOC-CRM compliance</li>
+            <li>Semantic forms for data entry (Building, Event, Person, Source)</li>
+            <li>Finder navigation integration</li>
+            <li>Ontology-based data validation</li>
+          </ul>
+        </div>
+
+        <h3 id="step1-5">1.5 Understanding the Configuration</h3>
+        <p>After successful import, the configurations enable:</p>
+        <ul>
+          <li><strong>Entity Management:</strong> Create and edit Metapolis entities through semantic forms</li>
+          <li><strong>Data Validation:</strong> Ensure data consistency through ontology constraints</li>
+          <li><strong>Navigation:</strong> Access entities through the Finder interface</li>
+          <li><strong>Relationships:</strong> Link entities together using CIDOC-CRM properties</li>
+          <li><strong>Metadata Tracking:</strong> Automatic creation and modification timestamps</li>
+        </ul>
+
+        <h4>Form Field Definitions</h4>
+        <p>Each entity type includes a semantic form with specific field definitions. Here's an example of the <strong>Building</strong> form structure:</p>
+        
+        <div class="form-details">
+          <h5>Building Form Fields</h5>
+          <div class="field-definition">
+            <h6>building_name</h6>
+            <ul>
+              <li><strong>Label:</strong> "Name"</li>
+              <li><strong>Type:</strong> Text input</li>
+              <li><strong>Insert Pattern:</strong> <code>INSERT { $subject &lt;http://metapolis.com/ontology/building_name&gt; $value } WHERE {}</code></li>
+              <li><strong>Select Pattern:</strong> <code>SELECT $value WHERE { $subject &lt;http://metapolis.com/ontology/building_name&gt; $value }</code></li>
+              <li><strong>Delete Pattern:</strong> <code>DELETE { $subject &lt;http://metapolis.com/ontology/building_name&gt; $value } WHERE { $subject &lt;http://metapolis.com/ontology/building_name&gt; $value }</code></li>
+            </ul>
+          </div>
+          
+          <div class="field-definition">
+            <h6>building_function</h6>
+            <ul>
+              <li><strong>Label:</strong> "Function"</li>
+              <li><strong>Type:</strong> Select dropdown with predefined options (Religious, Government, Cultural, Commercial, Residential, Educational, Military, Industrial, Other)</li>
+              <li><strong>Insert Pattern:</strong> <code>INSERT { $subject &lt;http://metapolis.com/ontology/building_function&gt; $value } WHERE {}</code></li>
+              <li><strong>Select Pattern:</strong> <code>SELECT $value WHERE { $subject &lt;http://metapolis.com/ontology/building_function&gt; $value }</code></li>
+              <li><strong>Delete Pattern:</strong> <code>DELETE { $subject &lt;http://metapolis.com/ontology/building_function&gt; $value } WHERE { $subject &lt;http://metapolis.com/ontology/building_function&gt; $value }</code></li>
+            </ul>
+          </div>
+          
+          <div class="field-definition">
+            <h6>building_coordinates</h6>
+            <ul>
+              <li><strong>Label:</strong> "Coordinates"</li>
+              <li><strong>Type:</strong> Text input for geographic coordinates (latitude, longitude)</li>
+              <li><strong>Format:</strong> Decimal degrees (e.g., "43.7731, 11.2560")</li>
+              <li><strong>Insert Pattern:</strong> <code>INSERT { $subject &lt;http://metapolis.com/ontology/building_coordinates&gt; $value } WHERE {}</code></li>
+              <li><strong>Select Pattern:</strong> <code>SELECT $value WHERE { $subject &lt;http://metapolis.com/ontology/building_coordinates&gt; $value }</code></li>
+              <li><strong>Delete Pattern:</strong> <code>DELETE { $subject &lt;http://metapolis.com/ontology/building_coordinates&gt; $value } WHERE { $subject &lt;http://metapolis.com/ontology/building_coordinates&gt; $value }</code></li>
+            </ul>
+          </div>
+          
+          <div class="field-definition">
+            <h6>building_description</h6>
+            <ul>
+              <li><strong>Label:</strong> "Description"</li>
+              <li><strong>Type:</strong> Textarea for detailed descriptions</li>
+              <li><strong>Insert Pattern:</strong> <code>INSERT { $subject &lt;http://metapolis.com/ontology/building_description&gt; $value } WHERE {}</code></li>
+              <li><strong>Select Pattern:</strong> <code>SELECT $value WHERE { $subject &lt;http://metapolis.com/ontology/building_description&gt; $value }</code></li>
+              <li><strong>Delete Pattern:</strong> <code>DELETE { $subject &lt;http://metapolis.com/ontology/building_description&gt; $value } WHERE { $subject &lt;http://metapolis.com/ontology/building_description&gt; $value }</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-info" role="alert">
+          <strong>Field Definitions:</strong> Similar field definition patterns are used for Person (name, surname, patronymic, birth/death dates), Event (title, description), and Source (title, date, author) forms. Each field includes complete SPARQL patterns for data persistence and retrieval.
+        </div>
+
+        <h2 id="step2">Step 2: Connect the Database</h2>
+
+        <p>Next, we need to connect Metapolis to the PostGIS database for geospatial data.</p>
+
+        <h3 id="step2-1">2.1 Database Setup</h3>
+        <p>The Docker Compose setup has already started the PostGIS database, but we need to add sample data:</p>
+
+        <div class="alert alert-info" role="alert">
+          <strong>Sample Data:</strong> Follow the database setup instructions in the full documentation to populate your PostGIS database with sample geospatial data.
+        </div>
+
+        <h3 id="step2-2">2.2 Service Configuration</h3>
+        <p>The database connection is configured through the service file located at:</p>
+        <code>config/services/metapolis-ephedra.ttl</code>
+
+        <p>This file contains pre-configured queries for accessing geospatial data from your PostgreSQL database.</p>
+
+        <h2 id="step3">Step 3: Test Database Queries</h2>
+
+        <p>You can test the database connection using the built-in SPARQL endpoint.</p>
+
+        <h3 id="step3-1">3.1 Access SPARQL Endpoint</h3>
+        <ol>
+          <li>Navigate to <code>/sparql</code> URL in your ResearchSpace instance</li>
+          <li>Select the <strong>"metapolis"</strong> repository from the dropdown</li>
+        </ol>
+
+        <h3 id="step3-2">3.2 Test Query</h3>
+        <p>Try this example query to retrieve building data:</p>
+
+        <pre><code>PREFIX rs_sql_sail: &lt;http://www.researchspace.org/resource/system/sql#&gt;
+PREFIX metapolis_sql: &lt;http://www.researchspace.org/resource/system/service/metapolis_sql#&gt;
+
+SELECT * WHERE {
+  ?s rs_sql_sail:hasQueryId "all_buildings";
+     metapolis_sql:building_id ?building_id;
+     metapolis_sql:name ?name;
+     metapolis_sql:function ?function;
+     metapolis_sql:wkt ?wkt   
+}</code></pre>
+
+        <p>This query should return building data with their geometric information (WKT format) if your database is properly configured and populated.</p>
+
+        <h2 id="step4">Step 4: Explore Metapolis</h2>
+
+        <p>Once everything is set up, you can start exploring Metapolis features:</p>
+
+        <ul>
+          <li><strong>Create Entities:</strong> Use the Finder sidebar to create new Events, People, Buildings, and Sources</li>
+          <li><strong>Visualize Data:</strong> Access the map visualization components to see your geospatial data</li>
+          <li><strong>Link Sources:</strong> Connect archival sources to geographical locations</li>
+          <li><strong>Analyze Relationships:</strong> Explore spatial and temporal relationships in your data</li>
+        </ul>
+
+        <h2 id="next-steps">Next Steps</h2>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Full Documentation</h5>
+                <p class="card-text">Explore comprehensive guides, API references, and advanced configuration options.</p>
+                <a href="https://github.com/villaitatti/metapolis" target="_blank" class="btn btn-primary">View Documentation</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Map Visualization</h5>
+                <p class="card-text">Learn how to create custom map visualizations and configure advanced features.</p>
+                <a href="https://github.com/villaitatti/metapolis/wiki" target="_blank" class="btn btn-outline-primary">View Wiki</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+
+        <h3>Common Issues</h3>
+        <ul>
+          <li><strong>Configurations not visible:</strong> Make sure you checked "Keep source named graphs" during import</li>
+          <li><strong>Database connection errors:</strong> Verify your PostGIS database is running and accessible</li>
+          <li><strong>Empty query results:</strong> Ensure your database contains sample data</li>
+          <li><strong>SPARQL errors:</strong> Check that you've selected the "metapolis" repository</li>
+        </ul>
+
+        <h3>Getting Help</h3>
+        <p>If you encounter issues:</p>
+        <ul>
+          <li>Check the <a href="https://github.com/villaitatti/metapolis/issues" target="_blank">GitHub Issues</a> for known problems</li>
+          <li>Review the full documentation for detailed setup instructions</li>
+          <li>Ensure all prerequisites are properly installed and configured</li>
+        </ul>
+
+        <hr class="my-5">
+
+        <footer class="text-muted">
+          <p><strong>Metapolis</strong> - Spatializing Histories through Archival Sources</p>
+          <p>Funded by the National Endowment for the Humanities (NEH) | Project Director: Lukas Klic</p>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.quickstart-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  font-size: 16px;
+  min-font-size: 16px;
+}
+
+.quickstart-content * {
+  font-size: inherit;
+  min-font-size: 16px;
+}
+
+.quickstart-content h1 {
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 0.5em;
+  margin-bottom: 1.5em;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.quickstart-content h2 {
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.3em;
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.quickstart-content h3 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: #495057;
+  font-weight: 600;
+}
+
+.quickstart-content pre {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.quickstart-content code {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 0.2em 0.4em;
+  color: #e83e8c;
+}
+
+.quickstart-content pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #495057;
+}
+
+.quickstart-content ul, .quickstart-content ol {
+  margin-bottom: 1rem;
+}
+
+.quickstart-content li {
+  margin-bottom: 0.5rem;
+}
+
+.quickstart-content .alert {
+  border-radius: 8px;
+  border: none;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.quickstart-content .alert-info {
+  background-color: #e7f3ff;
+  color: #0c5460;
+}
+
+
+.quickstart-content .card {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 5px 10px;
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.quickstart-content .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.quickstart-content .btn {
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.quickstart-content .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.quickstart-content .btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.quickstart-content footer {
+  border-top: 1px solid #e9ecef;
+  padding-top: 2rem;
+  font-size: 16px;
+}
+
+.quickstart-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.quickstart-content a.btn-primary{
+  color: white;
+}
+
+.quickstart-content a:hover {
+  text-decoration: underline;
+}
+
+.quickstart-content strong {
+  font-weight: 600;
+}
+
+.config-file-details {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.config-file-details h5 {
+  color: #007bff;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.config-file-details h5:first-child {
+  margin-top: 0;
+}
+
+.config-file-details ul {
+  margin-bottom: 0.5rem;
+}
+
+.config-file-details li {
+  margin-bottom: 0.25rem;
+}
+
+.config-file-details code {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 16px;
+}
+
+</style>
