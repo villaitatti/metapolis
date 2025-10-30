@@ -6,7 +6,7 @@ Get Metapolis up and running in just a few steps:
 
 ### Step 1: Import Resource Configurations
 
-1. **Navigate to Data Import**: Go to `resource/Admin:DataImportExport` or click the settings button (⚙️) → "Data Import & Download"
+1. **Navigate to Data Import**: Go to `resource/Admin:DataImportExport` or click the settings button → "Data Import & Download"
 2. **Download Configuration Files**: Get the files from the [`metapolis_setup/configurations`](https://github.com/villaitatti/metapolis_setup/tree/main/configurations) folder
 3. **Import Files**: Upload both configuration files with "Keep source named graphs" checked:
    - `Metapolis_Ontology.trig` (ontology definitions)
