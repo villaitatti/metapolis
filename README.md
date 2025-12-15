@@ -99,7 +99,8 @@ This guide will walk you through creating new Building entities in Metapolis and
 1. **Access the Finder**
    - Navigate to the Finder sidebar in your ResearchSpace interface
    
-   ![Finder Interface](path/to/finder-screenshot.png)
+![sidebar](https://github.com/user-attachments/assets/0d752286-d387-483d-8d6a-ed6f797fa0a3)
+
 
 2. **Create a New Building**
    - In the Finder, locate and click on **"Metapolis Building"**
@@ -114,7 +115,8 @@ This guide will walk you through creating new Building entities in Metapolis and
    - As you type, the system will search for matching features in the PostGIS database
    - Select the appropriate feature from the dropdown suggestions
    
-   ![Feature Selection Interface](path/to/feature-selection-screenshot.png)
+   ![sidebar2](https://github.com/user-attachments/assets/8177fc19-9eb1-48a2-a71a-5c5619188620)
+
 
 4. **Complete the Building Details**
    - Fill in additional fields (name and related entities)
