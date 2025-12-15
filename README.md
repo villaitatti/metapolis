@@ -87,6 +87,65 @@ Follow the comprehensive database setup guide at [metapolis_setup repository](ht
 
 ### Step 4: Create new Buildings with Metapolis and connect them to the features in PostGIS
 
+This guide will walk you through creating new Building entities in Metapolis and linking them to geographical features stored in your PostGIS database.
+
+#### Prerequisites
+- Complete Steps 1-3 to ensure proper configuration
+- Ensure PostGIS database contains geographical features (buildings, monuments, etc.)
+- Have feature names ready for linking
+
+#### Step-by-Step Instructions
+
+1. **Access the Finder**
+   - Navigate to the Finder sidebar in your ResearchSpace interface
+   
+   ![Finder Interface](path/to/finder-screenshot.png)
+
+2. **Create a New Building**
+   - In the Finder, locate and click on **"Metapolis Building"**
+   - Click the **"New Metapolis Building"** blue button to start creating a new entity
+
+3. **Link to PostGIS Features**
+   
+   Your PostGIS database contains geographical features that may not yet be linked to Metapolis Building entities. For example, features like **"Galleria degli Uffizi"** might be available in the database but not yet connected.
+
+   - In the Building creation form, find the **"Has Related Feature"** textbox
+   - Start typing the name of the geographical feature (e.g., "Galleria degli Uffizi")
+   - As you type, the system will search for matching features in the PostGIS database
+   - Select the appropriate feature from the dropdown suggestions
+   
+   ![Feature Selection Interface](path/to/feature-selection-screenshot.png)
+
+4. **Complete the Building Details**
+   - Fill in additional fields (name and related entities)
+   - Add any relevant metadata or relationships
+   - Click **"Create Metapolis Building"** Building entity
+
+5. **Verify the Connection**
+   - The Building entity is now linked to its corresponding geographical feature in PostGIS
+   - You can view the building on the map visualization components
+   - The spatial data from PostGIS will be displayed for this building
+
+#### Adding More Features
+
+This process can be repeated for any geographical features in your PostGIS database:
+
+- **Manual Creation**: Follow steps 1-4 for each unlinked feature
+- **Batch Processing**: For multiple buildings, repeat the process systematically
+- **GIS Software Integration**: You can add new geographical features using GIS software (e.g., QGIS, ArcGIS) that connects to the same PostGIS database:
+  1. Use your GIS software to create or import new building footprints/features
+  2. Ensure the features are stored in the appropriate PostGIS table
+  3. The features will automatically become available in Metapolis
+  4. Follow steps 1-4 above to create corresponding Building entities and link them
+
+#### Tips
+- Keep feature names consistent between GIS software and Metapolis for easier linking
+- Use descriptive names that make features easy to identify
+- Verify spatial data accuracy before linking to ensure proper map visualization
+- Document any custom attributes or metadata in both the GIS database and Metapolis entities
+
+
+
 ### Next steps
 
 - **Create Entities**: Use the Finder sidebar to create new Events, People, Buildings, and Sources
