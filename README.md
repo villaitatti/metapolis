@@ -57,6 +57,7 @@ Follow the comprehensive database setup guide at [metapolis_setup repository](ht
 
 3. **Configure Metapolis with Ephedra**: To enable querying Metapolis data from outside the "metapolis" repository:
    - Navigate to **System Configurations** → **Repositories**
+   - Select the `ephedra` repository
    - Find the `fedsail:member` configuration
    - Append this configuration after the last element (note the comma is important):
    ```
