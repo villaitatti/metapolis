@@ -1,229 +1,26 @@
 <semantic-form
   persistence='{"type": "sparql", "targetInsertGraphIri": "http://www.researchspace.org/resource/g/data", "repository":"default"}'
   new-subject-template='http://metapolis.com/resource/person/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
-  fields='[
-    {
-      "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-      "deletePattern" : "DELETE { \n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value\n  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-      "selectPattern" : "SELECT DISTINCT ?value WHERE {\n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.\n  }",
-      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-      "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-      "defaultValues" : [ ],
-      "id" : "type",
-      "label" : "rdf type",
-      "insertPattern" : "INSERT { \n    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value\n    } WHERE {}",
-      "order" : 0
-    },
-    {
-      "iri" : "http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type",
-      "deletePattern" : "DELETE { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value } WHERE { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value }",
-      "selectPattern" : "SELECT ?value WHERE {\n  $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> ?value.\n}",
-      "range" : [ "http://www.cidoc-crm.org/cidoc-crm/E55_Type" ],
-      "label" : "for P2",
-      "insertPattern" : "INSERT { $subject <http://www.researchspace.org/resource/system/authority_manager/for_P2_has_type> $value} WHERE {}",
-      "treePatterns" : {
-        "type" : "simple",
-        "schemePattern" : "?item a crm:E55_Type .",
-        "relationPattern" : "?item crm:P127_has_broader_term ?parent ."
-      },
-      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object" ],
-      "defaultValues" : [ ],
-      "maxOccurs" : "1",
-      "id" : "has_type",
-      "order" : 0
-    },                       
-    {
-      "iri" : "http://www.researchspace.org/pattern/general/rdfs:label",
-      "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-      "selectPattern" : "SELECT ?value WHERE {\n  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.\n}",
-      "minOccurs" : "1",
-      "range" : [ ],
-      "label" : "has label",
-      "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-      "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-      "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-      "defaultValues" : [ ],
-      "maxOccurs" : "1",
-      "id" : "has_label",
-      "order" : 0
-    },
-    {
-      "id": "person_name",
-      "label": "Name (Given Name)",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/given_name\")) AS ?e41) }",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/given_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/given_name\")) AS ?e41) }"
-    },
-    {
-      "id": "person_surname",
-      "label": "Surname (Family Name)",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/family_name\")) AS ?e41) }",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/family_name> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/family_name\")) AS ?e41) }"
-    },
-    {
-      "id": "person_patronymic",
-      "label": "Patronymic",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { BIND(IRI(CONCAT(STR($subject), \"/patronymic\")) AS ?e41) }",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?e41 . ?e41 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://metapolis.com/vocabulary/patronymic> . ?e41 <http://www.w3.org/2000/01/rdf-schema#label> $value . BIND(IRI(CONCAT(STR($subject), \"/patronymic\")) AS ?e41) }"
-    },
-    {
-      "id": "person_birth_date",
-      "label": "Birth Date",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/person_birth_date> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/person_birth_date> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/person_birth_date> $value } WHERE { $subject <http://metapolis.com/ontology/person_birth_date> $value }"
-    },
-    {
-      "id": "person_death_date",
-      "label": "Death Date",
-      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/person_death_date> $value } WHERE {}",
-      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/person_death_date> $value }",
-      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/person_death_date> $value } WHERE { $subject <http://metapolis.com/ontology/person_death_date> $value }"
-    },
-    
-    {
-      "deletePattern" : "DELETE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      } WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_range ?range.
-        ?range a metapolis_ontology:Source.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Source" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_domain_of_relation_source",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.} WHERE {}",
-      "order" : 0
-    },
-    {
-      "deletePattern" : "DELETE {
-        $value metapolis_ontology:is_range_of $subject.
-        $subject metapolis_ontology:has_domain $value.
-      } WHERE {
-        $value metapolis_ontology:is_range_of $subject.
-        $subject metapolis_ontology:has_domain $value.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_domain ?range.
-        ?range a metapolis_ontology:Source.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Source" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_range_of_relation_source",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $value metapolis_ontology:is_domain_of $subject.
-        $subject metapolis_ontology:has_domain $value.} WHERE {}",
-      "order" : 104
-    },
-    {
-      "deletePattern" : "DELETE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      } WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_range ?range.
-        ?range a metapolis_ontology:Event.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Event" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_domain_of_relation_event",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.} WHERE {}",
-      "order" : 0
-    },
-    {
-      "deletePattern" : "DELETE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.
-      } WHERE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_domain ?domain.
-        ?domain a metapolis_ontology:Event.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Event" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_range_of_relation_event",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.} WHERE {}",
-      "order" : 0
-    },
-    {
-      "deletePattern" : "DELETE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      } WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_range ?range.
-        ?range a metapolis_ontology:Building.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Building" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_domain_of_relation_building",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $subject metapolis_ontology:is_domain_of $value.
-        $value metapolis_ontology:has_domain $subject.} WHERE {}",
-      "order" : 0
-    },
-    {
-      "deletePattern" : "DELETE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.
-      } WHERE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.
-      }",
-      "selectPattern" : "SELECT ?value ?label WHERE {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_domain ?domain.
-        ?domain a metapolis_ontology:Building.
-      }",
-      "domain" : [ ],
-      "range" : [ "http://metapolis.com#Building" ],
-      "defaultValues" : [ ],
-      "id" : "entity_is_range_of_relation_building",
-      "label" : "entity",
-      "insertPattern" : "INSERT {
-        $subject metapolis_ontology:is_range_of $value.
-        $value metapolis_ontology:has_range $subject.} WHERE {}",
-      "order" : 0
-    }
-  ]'
+  fields='[[ fieldDefinitions
+    type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+    has_type                                = "http://www.cidoc-crm.org/cidoc-crm/P2_has_type"
+    has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+  
+    person_name                             = "http://www.researchspace.org/pattern/person_name"
+    person_surname                          = "http://www.researchspace.org/pattern/person_surname"
+    person_patronymic                       = "http://www.researchspace.org/pattern/person_patronymic"
+    person_birth_date                       = "http://www.researchspace.org/pattern/person_birth_date"
+    person_death_date                       = "http://www.researchspace.org/pattern/person_death_date"
+
+    entity_is_domain_of_relation_source     = "http://www.researchspace.org/pattern/entity_is_domain_of_relation_source"
+    entity_is_range_of_relation_source      = "http://www.researchspace.org/pattern/entity_is_range_of_relation_source"
+    entity_is_domain_of_relation_event      = "http://www.researchspace.org/pattern/entity_is_domain_of_relation_event"
+    entity_is_range_of_relation_event       = "http://www.researchspace.org/pattern/entity_is_range_of_relation_event"
+    entity_is_domain_of_relation_person     = "http://www.researchspace.org/pattern/entity_is_domain_of_relation_person"
+    entity_is_range_of_relation_person      = "http://www.researchspace.org/pattern/entity_is_range_of_relation_person"
+    entity_is_domain_of_relation_building   = "http://www.researchspace.org/pattern/entity_is_domain_of_relation_building"
+    entity_is_range_of_relation_building    = "http://www.researchspace.org/pattern/entity_is_range_of_relation_building"
+  ]]'
   [[> rsp:FormDefaults]]
 >
 
@@ -233,111 +30,112 @@
   <div class="form-scroll-area">
     <div class="container-fluid">
 
-      <bs-tabs class="person-tabs form-main-window" id="person-tabs">
-        
-        <!-- Personal Details Tab -->
-        <bs-tab event-key="1" title="Personal Details">
           
-          <bs-row>
-            <bs-col md="6" sm="12">
-              <div id="person_name">
-                <semantic-form-text-input 
-                  label="Name (Given Name)" 
-                  placeholder="Enter the person's first name..." 
-                  for="person_name"
-                  description="The person's given or first name">
-                </semantic-form-text-input>
-              </div>
-            </bs-col>
-            <bs-col md="6" sm="12">
-              <div id="person_surname">
-                <semantic-form-text-input 
-                  label="Surname (Family Name)" 
-                  placeholder="Enter the person's surname..." 
-                  for="person_surname"
-                  description="The person's family name or surname">
-                </semantic-form-text-input>
-              </div>
-            </bs-col>
-          </bs-row>
+      <bs-row>
+        <bs-col md="6" sm="12">
+          <div id="person_name">
+            <semantic-form-text-input 
+              label="Name (Given Name)" 
+              placeholder="Enter the person's first name..." 
+              for="person_name"
+              description="The person's given or first name">
+            </semantic-form-text-input>
+          </div>
+        </bs-col>
+        <bs-col md="6" sm="12">
+          <div id="person_surname">
+            <semantic-form-text-input 
+              label="Surname (Family Name)" 
+              placeholder="Enter the person's surname..." 
+              for="person_surname"
+              description="The person's family name or surname">
+            </semantic-form-text-input>
+          </div>
+        </bs-col>
+      </bs-row>
 
-          <bs-row>
-            <bs-col md="12" sm="12">
-              <div id="person_patronymic">
-                <semantic-form-text-input 
-                  label="Patronymic" 
-                  placeholder="Enter the patronymic name..." 
-                  for="person_patronymic"
-                  description="Name derived from the father's name (e.g., son of, daughter of)">
-                </semantic-form-text-input>
-              </div>
-            </bs-col>
-          </bs-row>
+      <bs-row>
+        <bs-col md="12" sm="12">
+          <div id="person_patronymic">
+            <semantic-form-text-input 
+              label="Patronymic" 
+              placeholder="Enter the patronymic name..." 
+              for="person_patronymic"
+              description="Name derived from the father's name (e.g., son of, daughter of)">
+            </semantic-form-text-input>
+          </div>
+        </bs-col>
+      </bs-row>
 
-        </bs-tab>
 
-        <!-- Life Dates Tab -->
-        <bs-tab event-key="2" title="Life Dates">
+
           
-          <bs-row>
-            <bs-col lg="12" md="12" sm="12">
-              <div id="person_birth_date">
-                <semantic-form-composite-input 
-                  label="Birth Date"
-                  for='person_birth_date' 
-                  new-subject-template="http://metapolis.com/resource/birth/{{{{raw}}}}{{UUID}}{{{{/raw}}}}" 
-                  fields='[
-                    {
-                      "id": "time_primitive_day",
-                      "label": "Day",
-                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_day> $value } WHERE {}",
-                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_day> $value }",
-                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_day> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_day> $value }"
-                    },
-                    {
-                      "id": "time_primitive_month",
-                      "label": "Month",
-                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_month> $value } WHERE {}",
-                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_month> $value }",
-                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_month> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_month> $value }"
-                    },
-                    {
-                      "id": "time_primitive_year",
-                      "label": "Year",
-                      "insertPattern": "INSERT { $subject <http://metapolis.com/ontology/time_primitive_year> $value } WHERE {}",
-                      "selectPattern": "SELECT $value WHERE { $subject <http://metapolis.com/ontology/time_primitive_year> $value }",
-                      "deletePattern": "DELETE { $subject <http://metapolis.com/ontology/time_primitive_year> $value } WHERE { $subject <http://metapolis.com/ontology/time_primitive_year> $value }"
-                    }
-                  ]'>
-                  
-                  <semantic-form-hidden-input for="type" default-value="http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span"></semantic-form-hidden-input>
-                  
-                  <bs-row>
-                    <bs-col sm="4">
-                      <semantic-form-text-input label="Day" placeholder="DD" for="time_primitive_day"></semantic-form-text-input>
-                    </bs-col>
-                    <bs-col sm="4">
-                      <semantic-form-text-input label="Month" placeholder="MM" for="time_primitive_month"></semantic-form-text-input>
-                    </bs-col>
-                    <bs-col sm="4">
-                      <semantic-form-text-input label="Year" placeholder="YYYY" for="time_primitive_year"></semantic-form-text-input>
-                    </bs-col>
-                  </bs-row>
+      <bs-row>
+        <bs-col lg="12" md="12" sm="12">
+          <div id="person_birth_date">
+            <semantic-form-composite-input 
+              label="Birth Date"
+              for='person_birth_date' 
+              new-subject-template="http://metapolis.com/resource/birth/{{{{raw}}}}{{UUID}}{{{{/raw}}}}" 
+              fields='[[fieldDefinitions
+                type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                time_primitive_day          = "http://www.researchspace.org/pattern/time_primitive_day"
+                time_primitive_month        = "http://www.researchspace.org/pattern/time_primitive_month"
+                time_primitive_year         = "http://www.researchspace.org/pattern/time_primitive_year"
+              ]]'>
+              
+              <semantic-form-hidden-input for="type" default-value="http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span"></semantic-form-hidden-input>
+              
+              <bs-row>
+                <bs-col sm="4">
+                  <semantic-form-text-input label="Day" placeholder="DD" for="time_primitive_day"></semantic-form-text-input>
+                </bs-col>
+                <bs-col sm="4">
+                  <semantic-form-text-input label="Month" placeholder="MM" for="time_primitive_month"></semantic-form-text-input>
+                </bs-col>
+                <bs-col sm="4">
+                  <semantic-form-text-input label="Year" placeholder="YYYY" for="time_primitive_year"></semantic-form-text-input>
+                </bs-col>
+              </bs-row>
 
-                </semantic-form-composite-input>
-              </div>
-            </bs-col>
-          </bs-row>
+            </semantic-form-composite-input>
+          </div>
+        </bs-col>
+      </bs-row>
 
-          <bs-row>
-            <bs-col lg="12" md="12" sm="12">
-              <div id="person_death_date">
+      <bs-row>
+        <bs-col lg="12" md="12" sm="12">
+          <div id="person_death_date">
+            <semantic-form-composite-input 
+                label="Death Date"
+                for='person_death_date' 
+                new-subject-template="http://metapolis.com/resource/death/{{{{raw}}}}{{UUID}}{{{{/raw}}}}" 
+                fields='[[fieldDefinitions
+                  type                        = "http://www.w3.org/2000/01/rdf-schema#type"
+                  time_primitive_day          = "http://www.researchspace.org/pattern/time_primitive_day"
+                  time_primitive_month        = "http://www.researchspace.org/pattern/time_primitive_month"
+                  time_primitive_year         = "http://www.researchspace.org/pattern/time_primitive_year"
+                ]]'>
                 
-              </div>
-            </bs-col>
-          </bs-row>
+                <semantic-form-hidden-input for="type" default-value="http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span"></semantic-form-hidden-input>
+                
+                <bs-row>
+                  <bs-col sm="4">
+                    <semantic-form-text-input label="Day" placeholder="DD" for="time_primitive_day"></semantic-form-text-input>
+                  </bs-col>
+                  <bs-col sm="4">
+                    <semantic-form-text-input label="Month" placeholder="MM" for="time_primitive_month"></semantic-form-text-input>
+                  </bs-col>
+                  <bs-col sm="4">
+                    <semantic-form-text-input label="Year" placeholder="YYYY" for="time_primitive_year"></semantic-form-text-input>
+                  </bs-col>
+                </bs-row>
 
-        </bs-tab>
+              </semantic-form-composite-input> 
+          </div>
+        </bs-col>
+      </bs-row>
+
 
       <bs-tabs id="entity_relation_tabs" default-active-key="11">
 
@@ -353,61 +151,11 @@
                 for="entity_is_domain_of_relation_building"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_range",
-                    "id" : "relation_has_range_building",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value a metapolis_ontology:Building.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Building" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                relation_has_range_building             = "http://www.researchspace.org/pattern/relation_has_range_building"
+                ]]'
               >
 
               
@@ -419,7 +167,7 @@
                       for='relation_has_range_building'
                       placeholder-item-template="
                         <div class='image-uploader'>
-                          <div><rs-icon icon-type='rounded' icon-name='Building' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div><rs-icon icon-type='rounded' icon-name='Build' class='upload_icon' symbol='true'></rs-icon></div>
                           <div>Drag and Drop a building from another frame or</div>
                           <div><span class='text-link'>click to create a new Building.</span></div>
                         </div>"
@@ -439,7 +187,7 @@
 
             </bs-col>
 
-            <bs-col lg="6" class="incoming_relation">
+            <bs-col lg="6">
 
               <strong>Incoming relations</strong>
 
@@ -449,61 +197,11 @@
                 for="entity_is_range_of_relation_building"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_domain",
-                    "id" : "relation_has_domain_building",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value a metapolis_ontology:Building.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Building" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                relation_has_domain_building            = "http://www.researchspace.org/pattern/relation_has_domain_building"
+                ]]'
               >
 
               
@@ -515,7 +213,7 @@
                       for='relation_has_domain_building'
                       placeholder-item-template="
                         <div class='image-uploader'>
-                          <div><rs-icon icon-type='rounded' icon-name='Building' class='upload_icon' symbol='true'></rs-icon></div>
+                          <div><rs-icon icon-type='rounded' icon-name='Build' class='upload_icon' symbol='true'></rs-icon></div>
                           <div>Drag and Drop a building from another frame or</div>
                           <div><span class='text-link'>click to create a new Building.</span></div>
                         </div>"
@@ -532,8 +230,8 @@
                 </bs-row>
               
               </semantic-form-composite-input>
-            </bs-col>
 
+            </bs-col>
 
           </bs-row>
 
@@ -551,61 +249,11 @@
                 for="entity_is_domain_of_relation_event"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_range",
-                    "id" : "relation_has_range_event",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value a metapolis_ontology:Event.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Event" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                  type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                  has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                  relation_has_range_event                =  "http://www.researchspace.org/pattern/relation_has_range_event"
+                ]]'
               >
 
               
@@ -647,64 +295,13 @@
                 for="entity_is_range_of_relation_event"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_domain",
-                    "id" : "relation_has_domain_event",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value a metapolis_ontology:Event.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Event" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                  type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                  has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                  relation_has_domain_event               = "http://www.researchspace.org/pattern/relation_has_domain_event"
+                ]]'
               >
 
-              
               <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
 
                 <bs-row>
@@ -749,63 +346,12 @@
                 for="entity_is_domain_of_relation_source"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_range",
-                    "id" : "relation_has_range_source",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_range $value.
-                      $value a metapolis_ontology:Source.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_range $value.
-                      $value metapolis_ontology:is_range_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Source" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                  type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                  has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                  relation_has_range_source               = "http://www.researchspace.org/pattern/relation_has_range_source" 
+                ]]'
               >
-
               
               <semantic-form-hidden-input for="type" default-value='http://metapolis.com#Relation'></semantic-form-hidden-input>
 
@@ -845,61 +391,11 @@
                 for="entity_is_range_of_relation_source"
                 new-subject-template="https://metapolis.com/resource/relation/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
                 parent-subject="{{subject}}"
-                fields='[
-                  {
-                    "iri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                    "id" : "type",
-                    "deletePattern" : "DELETE {$subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value  } WHERE { $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value }",
-                    "selectPattern" : "SELECT DISTINCT ?value WHERE {    $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?value.  }",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "range" : [ "http://www.w3.org/2000/01/rdf-schema#Class" ],
-                    "defaultValues" : [ ],
-                    
-                    "label" : "rdf type",
-                    "insertPattern" : "INSERT {     $subject <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> $value    } WHERE {}",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://www.w3.org/2000/01/rdf-schema#label",
-                    "deletePattern" : "DELETE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value } WHERE { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value }",
-                    "selectPattern" : "SELECT ?value WHERE {  $subject <http://www.w3.org/2000/01/rdf-schema#label> ?value.}",
-                    "minOccurs" : "1",
-                    "range" : [ ],
-                    "label" : "has label",
-                    "insertPattern" : "INSERT { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#string",
-                    "domain" : [ "http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "id" : "has_label",
-                    "order" : 0
-                  },
-                  {
-                    "iri": "http://metapolis.com#has_domain",
-                    "id" : "relation_has_domain_source",
-                    "deletePattern" : "DELETE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    } WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.
-                    }",
-                    "selectPattern" : "SELECT ?value ?label WHERE {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value a metapolis_ontology:Source.
-                    }",
-                    "minOccurs" : "1",
-                    "insertPattern" : "INSERT {
-                      $subject metapolis_ontology:has_domain $value.
-                      $value metapolis_ontology:is_domain_of $subject.} WHERE {}",
-                    "xsdDatatype" : "http://www.w3.org/2001/XMLSchema#anyURI",
-                    "range" : [ "http://metapolis.com#Source" ],
-                    "defaultValues" : [ ],
-                    "maxOccurs" : "1",
-                    "order" : 0
-                  }
-                ]'
+                fields='[[ fieldDefinitions
+                  type                                    = "http://www.w3.org/2000/01/rdf-schema#type"
+                  has_label                               = "http://www.w3.org/2000/01/rdf-schema#label"
+                  relation_has_domain_source               = "http://www.researchspace.org/pattern/relation_has_domain_source" 
+                ]]'
               >
 
               
