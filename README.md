@@ -19,9 +19,10 @@ See the [Official RS documentation](https://github.com/researchspace/researchspa
 
 1. **Navigate to Data Import**: Go to `resource/Admin:DataImportExport` or click the settings button → "Data Import & Download"
 2. **Download Configuration Files**: Get the files from the [`metapolis_setup/configurations`](https://github.com/villaitatti/metapolis_setup/tree/main/configurations) folder
-3. **Import Files**: Upload both configuration files with "Keep source named graphs" checked:
+3. **Import Files**: Upload all three configuration files with "Keep source named graphs" checked:
    - `Metapolis_Ontology.trig` (ontology definitions)
    - `Metapolis_Entity.trig` (entity configurations)
+   - `Metapolis_KP.trig` (knowledge patterns/field definitions) - Go to **Settings → Knowledge Patterns** to import this file
 4. **Verify Import**: Check the Finder sidebar for Metapolis entities (Event, Person, Building, Source)
 
 ### Step 2: Setup Database
