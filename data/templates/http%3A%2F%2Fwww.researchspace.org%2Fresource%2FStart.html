@@ -5,54 +5,342 @@
         
         <h1>Metapolis</h1>
 
+        <p>The creation of geospatial enhancements to an existing digital infrastructure that will allow users to link to other scholarship, generate new research, and publish findings.</p>
+
+        <p>Metapolis aims to develop a digital research infrastructure to support scholarship in the humanities that seeks to geospatially reconstruct places throughout time. As an interactive map-based publication platform, it enables users to cross-pollinate archival, bibliographic and multimedia sources with interpretive research, allowing for their interlinking and visualization on a map. Built on top of ResearchSpace, an open-source Semantic Web research environment, it facilitates the reuse and publishing of Linked Open Data. A rich set of features support data enrichment with external knowledge bases such as VIAF, WikiData, OCLC, and the Getty vocabularies.</p>
+
         <div class="alert alert-info" role="alert">
-          <strong>Full Documentation:</strong> For comprehensive documentation, visit <a href="https://github.com/villaitatti/metapolis" target="_blank" class="alert-link">https://github.com/villaitatti/metapolis</a>
+          <strong>Full Documentation:</strong> For comprehensive documentation, visit <a href="https://github.com/villaitatti/metapolis" target="_blank" class="alert-link">https://github.com/villaitatti/metapolis</a> and <a href="https://github.com/villaitatti/metapolis/wiki" target="_blank" class="alert-link">the wiki</a>
         </div>
+
+        <h2>Overview</h2>
+        <p>Metapolis is a ResearchSpace application that provides geospatial visualization and data management capabilities for humanities research. The platform enables scholars to:</p>
+        <ul>
+          <li>Create and manage geospatial entities (Buildings, Events, People, Sources)</li>
+          <li>Link archival sources to buildings and geographical locations</li>
+          <li>Visualize historical data on interactive maps</li>
+          <li>Connect research findings through semantic relationships</li>
+          <li>Publish and share Linked Open Data</li>
+        </ul>
+        <p>The application integrates with PostgreSQL/PostGIS for spatial data storage and leverages ResearchSpace's semantic web infrastructure for knowledge management.</p>
+
+        <h2>Prerequisites</h2>
+        <p>Before installing Metapolis, ensure you have:</p>
+        <ul>
+          <li><strong>ResearchSpace Platform</strong>: Version 4.0 or later installed and running</li>
+          <li><strong>Docker & Docker Compose</strong>: For database setup (see <a href="https://docs.docker.com/engine/install/" target="_blank">Docker documentation</a>)</li>
+          <li><strong>Basic Knowledge</strong>: Familiarity with SPARQL queries and semantic web concepts is helpful</li>
+          <li><strong>System Requirements</strong>: Sufficient resources to run ResearchSpace and PostgreSQL containers</li>
+        </ul>
 
         <h2>Quickstart Guide</h2>
 
-        <p>Get Metapolis up and running in just a few steps:</p>
-
-        <h3>Step 0: Add the app</h3>
+        <h3>Step 0: Add the App</h3>
+        
+        <h4>0.1: Install ResearchSpace</h4>
         <ol>
-          <li>Execute a Researchspace instance</li>
-          <li>Add the app to the instance</li>
+          <li><strong>Download ResearchSpace</strong>: Obtain ResearchSpace version 4.0 or later from the <a href="https://github.com/researchspace/researchspace" target="_blank">official repository</a></li>
+          <li><strong>Follow Installation Instructions</strong>: Complete the ResearchSpace installation process according to the official documentation</li>
+          <li><strong>Start the Instance</strong>: Launch your ResearchSpace instance and verify it's running correctly</li>
+          <li><strong>Access the Platform</strong>: Navigate to your ResearchSpace instance in a web browser (typically <code>http://localhost:10214</code>)</li>
         </ol>
-        <p>See the <a href="https://github.com/researchspace/researchspace" target="_blank">Official RS documentation</a>.</p>
 
-        <h3>Step 1: Import Resource Configurations</h3>
+        <h4>0.2: Add Metapolis App to ResearchSpace</h4>
         <ol>
-          <li><strong>Navigate to Data Import</strong>: Go to <code>resource/Admin:DataImportExport</code> or click the settings button → "Data Import & Download"</li>
-          <li><strong>Download Configuration Files</strong>: Get the files from the <a href="https://github.com/villaitatti/metapolis_setup/tree/main/configurations" target="_blank"><code>metapolis_setup/configurations</code></a> folder</li>
-          <li><strong>Import Files</strong>: Upload all three configuration files with "Keep source named graphs" checked:
+          <li><strong>Clone the Metapolis Repository</strong>:
+            <pre><code>git clone https://github.com/villaitatti/metapolis.git</code></pre>
+          </li>
+          <li><strong>Add App to ResearchSpace</strong>: Follow the <a href="https://github.com/researchspace/researchspace" target="_blank">Official ResearchSpace documentation</a> for adding apps to your instance.</li>
+          <li><strong>Verify App Installation</strong>:
             <ul>
-              <li><code>Metapolis_Ontology.trig</code> (ontology definitions)</li>
-              <li><code>Metapolis_Entity.trig</code> (entity configurations)</li>
-              <li><code>Metapolis_KP.trig</code> (knowledge patterns/field definitions) - Go to <strong>Settings → Knowledge Patterns</strong> to import this file</li>
+              <li>Navigate to the <strong>Admin</strong> page by clicking the <strong>System Settings button</strong> (gear icon) in the top right corner</li>
+              <li>Select <strong>"Apps & Storages"</strong> in the <strong>System Management</strong> group</li>
+              <li>Verify that <strong>Metapolis</strong> appears in the list of installed apps</li>
+              <li>Confirm the app status shows as "Active" or "Connected"</li>
             </ul>
           </li>
-          <li><strong>Verify Import</strong>: Check the Finder sidebar for Metapolis entities (Event, Person, Building, Source)</li>
         </ol>
 
-        <h3>Step 2: Setup Database</h3>
-        <p>Follow the comprehensive database setup guide at <a href="https://github.com/villaitatti/metapolis_setup" target="_blank">metapolis_setup repository</a>:</p>
+        <h4>0.3: Download Metapolis Setup Repository</h4>
+        <p>The setup repository contains essential configuration files and database initialization scripts:</p>
         <ol>
-          <li><strong>Clone the setup repository</strong>:
+          <li><strong>Clone the Setup Repository</strong>:
             <pre><code>git clone https://github.com/villaitatti/metapolis_setup.git
 cd metapolis_setup</code></pre>
           </li>
-          <li><strong>Follow the database setup instructions</strong> in the repository's README.md:
+          <li><strong>Review Directory Structure</strong>: Familiarize yourself with the provided files:
             <ul>
-              <li>Configure environment variables using the <code>.env.template</code></li>
-              <li>Launch PostgreSQL with PostGIS using Docker Compose</li>
+              <li><code>configurations/</code> - ResearchSpace configuration files</li>
+              <li><code>metapolis-db/</code> - Database setup scripts and Docker configuration</li>
+              <li><code>README.md</code> - Detailed setup instructions</li>
             </ul>
           </li>
         </ol>
 
-        <h3>Step 3: Test Database Queries</h3>
+        <h3>Step 1: Import Resource Configurations</h3>
+        
+        <h4>1.1: Access Data Import Interface</h4>
         <ol>
-          <li><strong>Access SPARQL Endpoint</strong>: Navigate to <code>/sparql</code> and select the "metapolis" repository</li>
-          <li><strong>Run Test Query</strong>:
+          <li><strong>Navigate to Data Import</strong>: Access the import interface using one of these methods:
+            <ul>
+              <li>Direct URL: Navigate to <code>resource/Admin:DataImportExport</code></li>
+              <li>Via Settings: Click the <strong>System Settings button</strong> (gear icon) → Select <strong>"Data Import & Download"</strong> from the menu</li>
+            </ul>
+          </li>
+          <li><strong>Prepare for Import</strong>: Ensure you have the configuration files from the <code>metapolis_setup/configurations</code> folder ready</li>
+        </ol>
+
+        <h4>1.2: Import Ontology Definitions</h4>
+        <p>The ontology file defines the conceptual framework for all Metapolis entities:</p>
+        <ol>
+          <li><strong>Locate the File</strong>: Find <code>Metapolis_Ontology.trig</code> in the <code>metapolis_setup/configurations/</code> directory</li>
+          <li><strong>Upload the File</strong>: 
+            <ul>
+              <li>Click the <strong>"Choose File"</strong> or <strong>"Browse"</strong> button in the import interface</li>
+              <li>Select <code>Metapolis_Ontology.trig</code></li>
+            </ul>
+          </li>
+          <li><strong>Configure Import Options</strong>:
+            <ul>
+              <li>✅ Check <strong>"Keep source named graphs"</strong> to preserve the ontology structure</li>
+              <li>This ensures proper namespace and graph organization</li>
+            </ul>
+          </li>
+          <li><strong>Execute Import</strong>: Click <strong>"Import"</strong> and wait for confirmation</li>
+          <li><strong>Verify Success</strong>: Check for success message indicating the ontology was imported</li>
+        </ol>
+        <p><strong>What This File Contains:</strong></p>
+        <ul>
+          <li>Base entity class: <code>metapolis_ontology:Metapolis_Entity</code></li>
+          <li>Four main entity types: Building, Event, Person, Source</li>
+          <li>OWL-compliant class hierarchies</li>
+          <li>Multilingual labels and descriptions</li>
+        </ul>
+
+        <h4>1.3: Import Entity Configurations</h4>
+        <p>The entity configuration file connects the ontology to ResearchSpace forms and navigation:</p>
+        <ol>
+          <li><strong>Locate the File</strong>: Find <code>Metapolis_Entity.trig</code> in the <code>metapolis_setup/configurations/</code> directory</li>
+          <li><strong>Upload the File</strong>:
+            <ul>
+              <li>Click <strong>"Choose File"</strong> or <strong>"Browse"</strong> again</li>
+              <li>Select <code>Metapolis_Entity.trig</code></li>
+            </ul>
+          </li>
+          <li><strong>Configure Import Options</strong>:
+            <ul>
+              <li>✅ Check <strong>"Keep source named graphs"</strong> to maintain entity relationships</li>
+            </ul>
+          </li>
+          <li><strong>Execute Import</strong>: Click <strong>"Import"</strong> and wait for confirmation</li>
+          <li><strong>Verify Success</strong>: Confirm the import completed without errors</li>
+        </ol>
+        <p><strong>What This File Contains:</strong></p>
+        <ul>
+          <li>Entity definitions for all four Metapolis types</li>
+          <li>Form connections linking entities to semantic forms</li>
+          <li>Navigation integration for the Finder interface</li>
+          <li>Search and list view configurations</li>
+          <li>Metadata tracking using CIDOC-CRM standards</li>
+        </ul>
+
+        <h4>1.4: Verify Import Success</h4>
+        <p>After importing both files, verify the configuration is active:</p>
+        <ol>
+          <li><strong>Check the Finder Sidebar</strong>: Look for the following entities in the left sidebar:
+            <ul>
+              <li><strong>Metapolis Building</strong></li>
+              <li><strong>Metapolis Event</strong></li>
+              <li><strong>Metapolis Person</strong></li>
+              <li><strong>Metapolis Source</strong></li>
+            </ul>
+          </li>
+          <li><strong>Test Entity Access</strong>: Click on any entity type to verify it opens without errors</li>
+          <li><strong>Verify Forms</strong>: Try clicking <strong>"New [Entity Type]"</strong> to ensure forms are properly connected</li>
+        </ol>
+        <p>If entities don't appear, try refreshing the page or restarting the ResearchSpace instance. If it still not showing up, please write an issue describing the problem.</p>
+
+        <h3>Step 2: Setup Database</h3>
+        <p>Metapolis requires a PostgreSQL database with PostGIS extension for storing and querying geospatial data. This step guides you through setting up the database using Docker.</p>
+
+        <h4>2.1: Navigate to Database Directory</h4>
+        <p>From the <code>metapolis_setup</code> repository you cloned in Step 0:</p>
+        <pre><code>cd metapolis_setup/metapolis-db</code></pre>
+        <p>This directory contains all necessary files for database setup:</p>
+        <ul>
+          <li><code>docker-compose.yml</code> - Container configuration</li>
+          <li><code>.env.template</code> - Environment variables template</li>
+          <li><code>init-scripts/</code> - Automatic database initialization scripts</li>
+        </ul>
+
+        <h4>2.2: Configure Environment Variables</h4>
+        <p>Before launching the database, configure your credentials and settings:</p>
+        <ol>
+          <li><strong>Create Environment File</strong>:
+            <pre><code>cp .env.template .env</code></pre>
+          </li>
+          <li><strong>Edit the <code>.env</code> File</strong>: Open the file in your preferred text editor and configure:
+            <pre><code># Database Configuration
+POSTGRES_DB=metapolis
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_secure_password_here
+
+# Authentication Method
+POSTGRES_HOST_AUTH_METHOD=md5  # Use md5 or scram-sha-256 for production</code></pre>
+          </li>
+          <li><strong>Update Repository Configuration</strong>: The database credentials must be synchronized in two locations:
+            <ul>
+              <li><strong>Metapolis Setup</strong>: Update the <code>.env</code> file in <code>metapolis_setup/metapolis-db/.env</code> (completed in step 2 above)</li>
+              <li><strong>Metapolis Repository</strong>: Update the repository configuration in the <strong>Metapolis app</strong> at <code>config/repositories/metapolis.ttl</code></li>
+            </ul>
+            <p>In the <code>metapolis.ttl</code> file, update the connection parameters to match your <code>.env</code> values:</p>
+            <pre><code>sql:jdbcUrl "jdbc:postgresql://localhost:5432/metapolis" ;
+sql:username "postgres" ;
+sql:password "your_secure_password_here" ;</code></pre>
+            <p><strong>Important</strong>: Both files must have matching credentials for the connection to work properly.</p>
+          </li>
+          <li><strong>Security Considerations</strong>:
+            <ul>
+              <li><strong>Development</strong>: You can use <code>trust</code> authentication for local testing</li>
+              <li><strong>Production</strong>: Always use <code>md5</code> or <code>scram-sha-256</code> with strong passwords</li>
+              <li><strong>Password Strength</strong>: Choose a unique, complex password for <code>POSTGRES_PASSWORD</code></li>
+              <li><strong>File Security</strong>: The <code>.env</code> file is git-ignored to prevent credential exposure</li>
+              <li><strong>Credential Sync</strong>: Always update both locations when changing database credentials</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>2.3: Understand Database Initialization</h4>
+        <p>The <code>init-scripts/</code> directory contains three SQL scripts that run <strong>automatically</strong> on first startup:</p>
+        <ol>
+          <li><strong><code>01-init-database.sql</code></strong>: 
+            <ul>
+              <li>Enables PostGIS and PostGIS Topology extensions</li>
+              <li>Creates the <code>metapolis</code> schema for organized data storage</li>
+              <li>Configures search paths for efficient queries</li>
+            </ul>
+          </li>
+          <li><strong><code>02-create-buildings-table.sql</code></strong>:
+            <ul>
+              <li>Defines the Buildings table structure with geometry support</li>
+              <li>Creates spatial indexes for efficient geospatial queries</li>
+              <li>Sets up automatic timestamp tracking</li>
+            </ul>
+          </li>
+          <li><strong><code>03-insert-sample-buildings.sql</code></strong>:
+            <ul>
+              <li>Inserts 5 famous Florence buildings as sample data</li>
+              <li>Provides realistic coordinates and building functions</li>
+              <li>Includes verification queries for data validation</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>2.4: Launch the Database</h4>
+        <p>Start the PostgreSQL container with PostGIS:</p>
+        <pre><code># Ensure you're in the metapolis-db directory
+cd metapolis_setup/metapolis-db
+
+# Start the database services
+docker-compose up -d</code></pre>
+        <p><strong>What Happens During Startup:</strong></p>
+        <ul>
+          <li>Docker pulls the <code>postgis/postgis:15-3.3</code> image (if not already present)</li>
+          <li>Creates a container named <code>metapolis-postgres</code></li>
+          <li>Executes initialization scripts in alphabetical order</li>
+          <li>Sets up PostGIS extensions and sample data</li>
+          <li>Exposes the database on port 5432</li>
+        </ul>
+
+        <h4>2.5: Verify Database Installation</h4>
+        <p>After the container starts, verify everything is working correctly:</p>
+        <ol>
+          <li><strong>Check Container Status</strong>:
+            <pre><code>docker ps | grep metapolis-postgres</code></pre>
+            <p>You should see the container running with status "Up"</p>
+          </li>
+          <li><strong>Test Database Connection</strong>:
+            <pre><code>docker exec -it metapolis-postgres psql -U postgres -d metapolis -c "SELECT version();"</code></pre>
+            <p>This should return the PostgreSQL version information</p>
+          </li>
+          <li><strong>Verify PostGIS Installation</strong>:
+            <pre><code>docker exec -it metapolis-postgres psql -U postgres -d metapolis -c "SELECT PostGIS_Version();"</code></pre>
+            <p>This should return the PostGIS version (e.g., "3.3")</p>
+          </li>
+          <li><strong>Check Buildings Table</strong>:
+            <pre><code>docker exec -it metapolis-postgres psql -U postgres -d metapolis -c "\dt metapolis.*"</code></pre>
+            <p>You should see the <code>buildings</code> table listed</p>
+          </li>
+          <li><strong>Verify Sample Data</strong>:
+            <pre><code>docker exec -it metapolis-postgres psql -U postgres -d metapolis -c "SELECT name, function FROM metapolis.buildings;"</code></pre>
+            <p>This should return the 5 Florence buildings (Palazzo Vecchio, Duomo, etc.)</p>
+          </li>
+        </ol>
+
+        <h4>2.6: Troubleshooting Database Issues</h4>
+        <p><strong>Problem: Container Already Exists</strong></p>
+        <p>If you see "Container already exists" or initialization scripts don't run:</p>
+        <pre><code># Stop and remove the container
+docker-compose down
+
+# Remove the persistent volume (⚠️ This deletes existing data)
+docker volume rm metapolis-db_postgres_data
+
+# Verify volume is removed
+docker volume ls | grep metapolis
+
+# Start fresh
+docker-compose up -d</code></pre>
+        <p><strong>Problem: Connection Refused</strong></p>
+        <p>If you can't connect to the database:</p>
+        <ul>
+          <li>Verify the container is running: <code>docker ps</code></li>
+          <li>Check logs for errors: <code>docker-compose logs -f postgres</code></li>
+          <li>Ensure port 5432 is not already in use</li>
+          <li>Verify your <code>.env</code> file has correct credentials</li>
+        </ul>
+        <p><strong>Problem: Scripts Not Executing</strong></p>
+        <p>If sample data is missing:</p>
+        <ul>
+          <li>Check container logs: <code>docker-compose logs postgres</code></li>
+          <li>Manually execute scripts (see metapolis_setup README for details)</li>
+          <li>Verify scripts have proper line endings (Unix format, not Windows)</li>
+        </ul>
+        <p>For detailed troubleshooting, refer to the <a href="https://github.com/villaitatti/metapolis_setup" target="_blank">metapolis_setup repository README</a>.</p>
+
+        <div class="alert alert-success" role="alert">
+          <strong>Congratulations!</strong> Your Metapolis system is now up and running with a properly configured database. You can proceed to the next steps to test queries and start creating geospatial entities.
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+          <strong>Important Security Note:</strong> For production systems, make sure to update the default database password to a strong, unique password in both <code>config/repositories/metapolis.ttl</code> and <code>metapolis_setup/metapolis-db/.env</code> files.
+        </div>
+
+        <h2>Next Steps</h2>
+
+        <h3>Step 3: Test Database Queries</h3>
+        <p>This step verifies that ResearchSpace can successfully query the PostgreSQL/PostGIS database and retrieve geospatial data.</p>
+
+        <h4>3.1: Access the SPARQL Endpoint</h4>
+        <ol>
+          <li><strong>Navigate to SPARQL Interface</strong>: 
+            <ul>
+              <li>Go to <code>/sparql</code> in your ResearchSpace instance</li>
+              <li>Or click <strong>"SPARQL"</strong> from the main navigation menu</li>
+            </ul>
+          </li>
+          <li><strong>Select Repository</strong>: 
+            <ul>
+              <li>In the repository dropdown, select <strong>"metapolis"</strong></li>
+              <li>This connects to the PostgreSQL database you configured</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>3.2: Run Basic Test Query</h4>
+        <p>Test the connection with a simple query that retrieves all buildings:</p>
+        <ol>
+          <li><strong>Enter the Query</strong>: Copy and paste this SPARQL query into the editor:
             <pre><code>PREFIX rs_sql_sail: &lt;http://www.researchspace.org/resource/system/sql#&gt;
 PREFIX metapolis_sql: &lt;http://www.researchspace.org/resource/system/service/metapolis_sql#&gt;
 
@@ -64,20 +352,73 @@ SELECT * WHERE {
      metapolis_sql:wkt ?wkt
 }</code></pre>
           </li>
-          <li><strong>Configure Metapolis with Ephedra</strong>: To enable querying Metapolis data from outside the "metapolis" repository:
+          <li>Select the repository <strong>"Metapolis"</strong></li>
+          <li><strong>Execute the Query</strong>: Click the <strong>"Execute"</strong> button</li>
+          <li><strong>Verify Results</strong>: You should see results containing:
             <ul>
-              <li>Navigate to <strong>System Configurations</strong> → <strong>Repositories</strong></li>
-              <li>Find the <code>fedsail:member</code> configuration</li>
-              <li>Append this configuration after the last element (note the comma is important):
+              <li><code>building_id</code>: Unique identifier for each building</li>
+              <li><code>name</code>: Building names (e.g., "Palazzo Vecchio", "Duomo di Firenze")</li>
+              <li><code>function</code>: Building types (e.g., "Government", "Religious")</li>
+              <li><code>wkt</code>: Well-Known Text geometry representation (polygon coordinates)</li>
+            </ul>
+          </li>
+          <li><strong>Expected Results</strong>: The query should return 5 rows representing the Florence sample buildings</li>
+        </ol>
+        <p><strong>What This Query Does:</strong></p>
+        <ul>
+          <li>Uses the SQL Sail bridge to query PostgreSQL directly from SPARQL</li>
+          <li>Executes the predefined <code>all_buildings</code> query from the service configuration</li>
+          <li>Retrieves building data including spatial geometry in WKT format</li>
+          <li>Demonstrates the integration between semantic web and relational database</li>
+        </ul>
+        <p>At this point the system is running and you can navigate the map.</p>
+
+        <h4>3.3: Configure Federated Queries with Ephedra</h4>
+        <p>To enable querying Metapolis data from other repositories in your ResearchSpace instance, configure Ephedra federation:</p>
+        <ol>
+          <li><strong>Navigate to Repository Configuration</strong>:
+            <ul>
+              <li>Go to <strong>System Settings</strong> (gear icon) → <strong>"System Configurations"</strong></li>
+              <li>Select <strong>"Repositories"</strong> from the configuration menu</li>
+            </ul>
+          </li>
+          <li><strong>Locate Federation Configuration</strong>:
+            <ul>
+              <li>Find the <code>fedsail:member</code> configuration section</li>
+              <li>This defines which repositories participate in federated queries</li>
+            </ul>
+          </li>
+          <li><strong>Add Metapolis to Federation</strong>:
+            <ul>
+              <li>Scroll to the last element in the <code>fedsail:member</code> list</li>
+              <li>Append this configuration <strong>after the last element</strong> (note the comma before the opening bracket):
                 <pre><code>, [
       ephedra:delegateRepositoryID "metapolis";
       ephedra:serviceReference &lt;http://www.researchspace.org/resource/system/repository/federation#metapolis&gt;
     ]</code></pre>
               </li>
-              <li>Update the configuration to save changes</li>
             </ul>
           </li>
-          <li><strong>Test Federated Query</strong>: Now you can query using the <strong>ephedra</strong> repository:
+          <li><strong>Save Configuration</strong>:
+            <ul>
+              <li>Click <strong>"Update"</strong> or <strong>"Save"</strong> to apply changes</li>
+              <li>The system may require a restart to activate the new configuration</li>
+            </ul>
+          </li>
+          <li><strong>Verify Federation</strong>: Check that the configuration was saved without syntax errors</li>
+        </ol>
+        <p><strong>Why This Matters:</strong></p>
+        <ul>
+          <li>Enables cross-repository queries combining Metapolis spatial data with other semantic data</li>
+          <li>Allows integration with external knowledge bases (VIAF, Wikidata, Getty vocabularies)</li>
+          <li>Supports complex queries that join geospatial and non-geospatial information</li>
+        </ul>
+
+        <h4>3.4: Test Federated Query</h4>
+        <p>Now test that you can access Metapolis data from the federated repository:</p>
+        <ol>
+          <li><strong>Switch Repository</strong>: In the SPARQL interface, select the <strong>"ephedra"</strong> repository (or your default federated repository)</li>
+          <li><strong>Enter Federated Query</strong>: Copy and paste this query:
             <pre><code>PREFIX rs_sql_sail: &lt;http://www.researchspace.org/resource/system/sql#&gt;
 PREFIX metapolis_sql: &lt;http://www.researchspace.org/resource/system/service/metapolis_sql#&gt;
 
@@ -90,17 +431,123 @@ SELECT * WHERE {
        metapolis_sql:wkt ?wkt
   }
 }</code></pre>
-            <p>This federated query allows you to access Metapolis data from outside the "metapolis" repository, enabling broader integration with other data sources in your ResearchSpace instance.</p>
+          </li>
+          <li><strong>Execute the Query</strong>: Click <strong>"Execute"</strong></li>
+          <li><strong>Verify Results</strong>: You should see the same building data as before, but now queried through the federation layer</li>
+        </ol>
+        <p><strong>Understanding the Federated Query:</strong></p>
+        <ul>
+          <li>The <code>SERVICE</code> clause directs the query to the metapolis repository</li>
+          <li>The federation layer handles routing and result aggregation</li>
+          <li>This pattern allows combining Metapolis data with other data sources in a single query</li>
+          <li>You can now join building data with entities from other repositories</li>
+        </ul>
+
+        <h4>3.5: Explore Additional Queries</h4>
+        <p>The Metapolis service configuration includes 15+ predefined queries. Try these examples:</p>
+        <p><strong>Query Buildings by Function:</strong></p>
+        <pre><code>PREFIX rs_sql_sail: &lt;http://www.researchspace.org/resource/system/sql#&gt;
+PREFIX metapolis_sql: &lt;http://www.researchspace.org/resource/system/service/metapolis_sql#&gt;
+
+SELECT * WHERE {
+  ?s rs_sql_sail:hasQueryId "buildings_by_function";
+     rs_sql_sail:hasParameter [
+       rs_sql_sail:parameterName "function_type";
+       rs_sql_sail:parameterValue "Religious"
+     ];
+     metapolis_sql:building_id ?building_id;
+     metapolis_sql:name ?name;
+     metapolis_sql:function ?function;
+     metapolis_sql:wkt ?wkt
+}</code></pre>
+        <p><strong>Query Buildings Near a Point:</strong></p>
+        <pre><code>PREFIX rs_sql_sail: &lt;http://www.researchspace.org/resource/system/sql#&gt;
+PREFIX metapolis_sql: &lt;http://www.researchspace.org/resource/system/service/metapolis_sql#&gt;
+
+SELECT * WHERE {
+  ?s rs_sql_sail:hasQueryId "buildings_near_point";
+     rs_sql_sail:hasParameter [
+       rs_sql_sail:parameterName "longitude";
+       rs_sql_sail:parameterValue "11.2558"
+     ];
+     rs_sql_sail:hasParameter [
+       rs_sql_sail:parameterName "latitude";
+       rs_sql_sail:parameterValue "43.7696"
+     ];
+     rs_sql_sail:hasParameter [
+       rs_sql_sail:parameterName "distance_meters";
+       rs_sql_sail:parameterValue "500"
+     ];
+     metapolis_sql:building_id ?building_id;
+     metapolis_sql:name ?name;
+     metapolis_sql:distance ?distance
+}</code></pre>
+        <p>These queries demonstrate the power of combining SPARQL with spatial SQL queries for geospatial analysis.</p>
+
+        <h3>Step 4: Create New Buildings with Metapolis</h3>
+        <p>Once you've verified that database queries work correctly, you can start creating Building entities in Metapolis and linking them to geographical features in your PostGIS database.</p>
+
+        <h4>4.1: Prerequisites</h4>
+        <p>Before creating buildings, ensure:</p>
+        <ul>
+          <li>✅ Steps 1-3 are completed successfully</li>
+          <li>✅ PostGIS database contains geographical features (buildings, monuments, etc.)</li>
+          <li>✅ You have feature names ready for linking</li>
+          <li>✅ The Finder sidebar shows Metapolis entities</li>
+        </ul>
+
+        <h4>4.2: Access the Finder Interface</h4>
+        <p>The Finder is your primary navigation tool for managing Metapolis entities:</p>
+        <ol>
+          <li><strong>Locate the Finder Sidebar</strong>: Look for the left sidebar in your ResearchSpace interface</li>
+          <li><strong>Find Metapolis Entities</strong>: Scroll to locate the Metapolis entity types</li>
+          <li><strong>Verify Access</strong>: Ensure you can see all four entity types (Building, Event, Person, Source)</li>
+        </ol>
+
+        <h4>4.3: Create a New Building Entity</h4>
+        <ol>
+          <li><strong>Select Building Entity Type</strong>:
+            <ul>
+              <li>In the Finder sidebar, locate and click on <strong>"Metapolis Building"</strong></li>
+              <li>This opens the Buildings list view showing existing building entities</li>
+            </ul>
+          </li>
+          <li><strong>Initiate Creation</strong>:
+            <ul>
+              <li>Click the <strong>"New Metapolis Building"</strong> button (typically blue and prominent)</li>
+              <li>This opens the Building creation form with all available fields</li>
+            </ul>
+          </li>
+          <li><strong>Understand the Form Structure</strong>:
+            <p>The form includes several sections:</p>
+            <ul>
+              <li><strong>Basic Information</strong>: Name, description, and classification</li>
+              <li><strong>Relationships</strong>: Connections to other entities (Events, People, Sources)</li>
+              <li><strong>Spatial Data</strong>: Link to PostGIS geographical features</li>
+              <li><strong>Metadata</strong>: Creation date, contributors, and provenance information</li>
+            </ul>
           </li>
         </ol>
 
-        <h3>Step 4: Create new Buildings with Metapolis and connect them to the features in PostGIS</h3>
+        <h4>4.4: Link to PostGIS Features</h4>
+        <p>This is the critical step that connects semantic entities to geospatial data. The system provides autocomplete functionality to search and link to features in your PostGIS database. Follow the form instructions to complete the building entity and establish the connection to geographical data.</p>
 
-        <h3>Next steps</h3>
+        <h4>4.5: Best Practices</h4>
         <ul>
-          <li><strong>Create Entities</strong>: Use the Finder sidebar to create new Events, People, Buildings, and Sources</li>
-          <li><strong>Visualize Data</strong>: Access map visualization components</li>
-          <li><strong>Link Sources</strong>: Connect archival sources to geographical locations</li>
+          <li><strong>Naming Conventions</strong>: Keep feature names consistent between GIS software and Metapolis</li>
+          <li><strong>Data Quality</strong>: Verify spatial data accuracy before linking to ensure proper map visualization</li>
+          <li><strong>Documentation</strong>: Document any custom attributes or metadata in both the GIS database and Metapolis entities</li>
+          <li><strong>Relationships</strong>: Link buildings to relevant Events, People, and Sources as you discover connections</li>
+        </ul>
+
+        <h2>Other Next Steps</h2>
+        <p>After completing the setup and creating your first buildings, explore these additional capabilities:</p>
+        <ul>
+          <li><strong>Expand Your Dataset</strong>: Create Events, add People, link Sources, and import more geographical data</li>
+          <li><strong>Visualize Your Data</strong>: Access map components, layer historical maps, and create custom views</li>
+          <li><strong>Advanced Queries</strong>: Use SPARQL for spatial analysis, temporal queries, and relationship exploration</li>
+          <li><strong>Collaboration</strong>: Add collaborators, configure permissions, and enable shared research</li>
+          <li><strong>Integration</strong>: Link to external knowledge bases like VIAF, Wikidata, OCLC, and Getty vocabularies</li>
         </ul>
 
         <h2>Contributing</h2>
@@ -121,10 +568,6 @@ SELECT * WHERE {
 
         <h2>Technical Specifications</h2>
         <p>For detailed technical specifications and additional documentation, see <a href="https://github.com/villaitatti/metapolis/wiki" target="_blank">the wiki</a>.</p>
-
-        <div class="alert alert-info" role="alert">
-          <strong>Detailed Setup Guide:</strong> For comprehensive step-by-step instructions with detailed explanations, see the <a href="DETAILED_SETUP_GUIDE.md" class="alert-link">Detailed Setup Guide</a>.
-        </div>
 
       </div>
     </div>
@@ -165,6 +608,13 @@ SELECT * WHERE {
 .quickstart-content h3 {
   margin-top: 2em;
   margin-bottom: 1em;
+  color: #495057;
+  font-weight: 600;
+}
+
+.quickstart-content h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
   color: #495057;
   font-weight: 600;
 }
@@ -213,6 +663,16 @@ SELECT * WHERE {
 .quickstart-content .alert-info {
   background-color: #e7f3ff;
   color: #0c5460;
+}
+
+.quickstart-content .alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.quickstart-content .alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
 }
 
 .quickstart-content a {
