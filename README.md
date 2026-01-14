@@ -354,7 +354,7 @@ For detailed troubleshooting, refer to the [metapolis_setup repository README](h
 
 **Congratulations!** Your Metapolis system is now up and running with a properly configured database. You can proceed to the next steps to test queries and start creating geospatial entities.
 
-** Important Security Note:** For production systems, make sure to update the default database password to a strong, unique password in both `config/repositories/metapolis.ttl` and `metapolis_setup/metapolis-db/.env` files.
+**Important Security Note:** For production systems, make sure to update the default database password to a strong, unique password in both `config/repositories/metapolis.ttl` and `metapolis_setup/metapolis-db/.env` files.
 
 ## Next Steps
 
