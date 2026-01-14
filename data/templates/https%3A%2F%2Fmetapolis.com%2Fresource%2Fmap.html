@@ -1,7 +1,7 @@
 <div id="mainContainer">
   <div id="mapNavigatorContainer" class="flexrows">
     <div class="map-container">
-      <semantic-context repository="ephedra">
+      <semantic-context repository="metapolis">
 
         <div style="width: 100%; height: 95vh; display: flex; position: relative">
           <!-- Sidebar component -->
@@ -17,28 +17,72 @@
         "Cultural":"rgba(194,24,91,0.9)",
         "Commercial":"rgba(239,108,0,0.9)"
       }'
+                                 timeline='{
+        "mode": "normal",
+        "min": 1300,
+        "max": 2025,
+        "default": 1700,
+        "locked": false
+      }'
                                  render-template="{{> feature-details}}"
                                  template-mapping='{
       "selectedFeature": "{{> feature-details}}"
     }'>
             <template id="feature-details">
               <!-- Custom feature details template -->
-              <div>
-                <h3>{{name}}</h3>
-                <p>Function: {{function}}</p>
-                <p>ID: {{building_id}}</p>
+              {{#if selectedFeature.values_}}
+              <div style="padding: 15px;">
+                <h3 style="margin-top: 0; color: #333;">{{selectedFeature.values_.name.value}}</h3>
+                
+                <p class="property-category" style="font-size: 18px; margin-bottom: 10px;">
+                  <strong>Category:</strong> {{selectedFeature.values_.function.value}}
+                </p>
+
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+
+                <h4 style="color: #337ab7; margin-top: 15px; font-weight: bold;">
+                  <i class="fa fa-info-circle"></i> Details
+                </h4>
+                
+                <p style="margin-bottom: 5px;">
+                  <strong>Building ID:</strong> {{selectedFeature.values_.building_id.value}}
+                </p>
+                
+                {{#if selectedFeature.values_.bob}}
+                <p style="margin-bottom: 5px;">
+                  <strong>Time Period:</strong> {{selectedFeature.values_.bob.value}} - {{selectedFeature.values_.boe.value}}
+                </p>
+                {{/if}}
+
+                {{#if selectedFeature.values_.subject}}
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+
+                <h4 style="color: #337ab7; margin-top: 15px; font-weight: bold;">
+                  <i class="fa fa-link"></i> Technical Info
+                </h4>
+                
+                <p style="font-size: 0.9em; color: #666; word-break: break-all;">
+                  <strong>Subject URI:</strong><br>
+                  {{selectedFeature.values_.subject.value}}
+                </p>
+                {{/if}}
               </div>
+              {{else}}
+              <div style="padding: 15px;">
+                <p>No feature data available.</p>
+              </div>
+              {{/if}}
             </template>
           </semantic-map-controls>
 
           <!-- Map component -->
           <div style="flex: 1; position: relative">
-            <semantic-context repository="metapolis">
               <semantic-map-advanced
                                      id="my-map"
                                      target-controls='["my-map-controls"]'
                                      feature-selection-targets='["my-map-controls"]'
-                                     map-options='{"crs":"EPSG:4326", "center": [43.7731, 11.2560], "zoom": 14}'
+                                     map-options='{"crs":"EPSG:4326", "extent": [11.248, 43.764, 11.264, 43.775]}'
+                                     year-filtering="true"
                                      selected-feature-style='{
             "color": "rgba(0, 128, 255, 1)",
             "borderColor": "black",
@@ -47,34 +91,54 @@
                                      query='
           PREFIX rs_sql_sail: <http://www.researchspace.org/resource/system/sql#>
           PREFIX metapolis_sql: <http://www.researchspace.org/resource/system/service/metapolis_sql#>
-          PREFIX metapolis_ontology: <http://metapolis.com#>
-          SELECT ?wkt ?function ?name ?building_id ?s WHERE {
-            SERVICE <http://www.researchspace.org/resource/system/repository/federation#metapolis> {
-              ?s rs_sql_sail:hasQueryId "all_buildings";
-                metapolis_sql:building_id ?building_id;
-                metapolis_sql:name ?name;
-                metapolis_sql:function ?function;
-                metapolis_sql:wkt ?wkt.
-            }
-            ?building a metapolis_ontology:Building;
-                      metapolis_ontology:related_feature ?name
+          
+          SELECT ?subject ?wkt ?function ?name ?building_id ?bob ?eob ?boe ?eoe WHERE {
+            ?subject rs_sql_sail:hasQueryId "all_buildings";
+              metapolis_sql:building_id ?building_id;
+              metapolis_sql:name ?name;
+              metapolis_sql:function ?function;
+              metapolis_sql:wkt ?wkt.
+            
+            # Fixed year values for all buildings (1300-2025)
+            BIND("1300" AS ?bob)
+            BIND("1300" AS ?eob)
+            BIND("2025" AS ?boe)
+            BIND("2025" AS ?eoe)
           }
             '>
-<tiles-layer
-                thumbnail='/assets/images/groad.jpg'
-                url='http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}'
-                identifier='GRoadmap'
-                name='Google Roadmap'
-                level='basemap'
-                author="Google"
-                location=""
-                year="2023">
-            </tiles-layer>
+        <tiles-layer
+          thumbnail='/assets/images/groad.jpg'
+          url='http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}'
+          identifier='GRoadmap'
+          name='Google Roadmap'
+          level='basemap'
+          author="Google"
+          location=""
+          year="2023">
+        </tiles-layer>
 
+        <tiles-layer
+          thumbnail='/assets/images/groad.jpg'
+          url='https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'
+          identifier='CartoLight'
+          name='Light'
+          level='basemap'
+          author='Carto'
+          location=""
+          year="2024">
+        </tiles-layer>
 
-                <!-- Add additional tile layers as needed -->
-              </semantic-map-advanced>
-            </semantic-context>
+        <tiles-layer
+          thumbnail='/assets/images/groad.jpg'
+          url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+          identifier='OpenStreetMap'
+          name='OpenStreetMap'
+          level='basemap'
+          author='OpenStreetMap 2024'
+          location=""
+          year="2024">
+        </tiles-layer>
+      </semantic-map-advanced>
           </div>
         </div>
 
