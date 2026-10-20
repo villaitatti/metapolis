@@ -1,0 +1,50 @@
+# Publish docs/wiki to the GitHub wiki (https://github.com/villaitatti/metapolis/wiki).
+#
+# docs/wiki is the source of truth: pages edited directly on the wiki are
+# overwritten, and pages removed from docs/wiki are removed from the wiki.
+# The wiki must already exist (create any first page from the Wiki tab once).
+name: Publish wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/wiki/**"
+      - ".github/workflows/publish-wiki.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-wiki
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check out wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: .wiki
+
+      - name: Sync docs/wiki into the wiki
+        run: rsync -av --delete --exclude ".git" docs/wiki/ .wiki/
+
+      - name: Commit and push
+        working-directory: .wiki
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki already up to date."
+            exit 0
+          fi
+          git commit -m "Update wiki from ${GITHUB_REPOSITORY}@${GITHUB_SHA::7}"
+          git push
