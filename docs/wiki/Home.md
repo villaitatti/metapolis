@@ -9,25 +9,6 @@ Metapolis lets researchers:
 - show the footprints on an **interactive map** with styling by function, a timeline, spyglass/swipe comparison and a 3D view;
 - query the geodata with **SPARQL**, even when it lives in a relational PostGIS database.
 
-## Contents
-
-| Page | What it covers |
-|---|---|
-| **Getting started** | |
-| [Installation and Setup](Installation-and-Setup) | Installing the app with `setup.sh` or by hand, the Ephedra federation, importing the configuration, checks |
-| **Backends** | |
-| [PostGIS and SQL Sail](PostGIS-and-SQL-Sail) | The default backend: how the SQL Sail turns SQL queries into SPARQL results, the service descriptor and the predefined queries |
-| [QLever and SPARQL Backends](QLever-and-SPARQL-Backends) | Using the bundled QLever endpoint, or any SPARQL endpoint, instead of PostGIS |
-| **Data and forms** | |
-| [Data Model and Forms](Data-Model-and-Forms) | Ontology, entity configurations, Knowledge Patterns, the four forms and how a Building is linked to its geometry |
-| [Relations](Relations) | How relations between entities are stored and edited, and how to extend them |
-| **Map** | |
-| [Map Navigation](Map-Navigation) | Using the Metapolis map: moving around, selecting, styling and filtering buildings, tools, customization |
-| [Map Component Guide](Map-Component-Guide) | Building your own map pages with `semantic-map-advanced` and `semantic-map-controls` |
-| [Map Component Reference](Map-Component-Reference) | Developer reference: component architecture, props, state, events and internals |
-
-Every page has the same layout: a short introduction, related pages, a list of contents, the sections, and (where relevant) known issues and a troubleshooting table.
-
 ## How the pieces fit together
 
 Metapolis is split across **two repositories**:
