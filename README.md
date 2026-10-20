@@ -412,9 +412,7 @@ A **feature** is a row in the `metapolis.buildings` table (a name, a function an
 
 ![Linking a Building to a PostGIS feature](https://github.com/user-attachments/assets/8177fc19-9eb1-48a2-a71a-5c5619188620)
 
-The Building page opens. The linked feature is stored as `http://metapolis.com/resource/feature/<building_id>`, where `<building_id>` is the `id` of the row in `metapolis.buildings`.
-
-> 🚧 Documentation on navigating the map view is still to be written.
+The Building page opens. The linked feature is stored as `http://metapolis.com/resource/feature/<building_id>`, where `<building_id>` is the `id` of the row in `metapolis.buildings`
 
 ### Add new geometries from QGIS
 
@@ -499,6 +497,10 @@ Contributions are welcome:
 2. Create a feature branch
 3. Commit your changes
 4. Open a pull request
+
+## Wiki
+[Wiki](https://github.com/villaitatti/metapolis/wiki)
+[How to navigate the map](https://github.com/villaitatti/metapolis/wiki/Navigating-the-Metapolis-map)
 
 ## Acknowledgements
 
