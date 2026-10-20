@@ -6,6 +6,9 @@
 # or QLever, or any SPARQL endpoint you already run) and writes the app's
 # repository configuration so ResearchSpace can reach it.
 #
+# Tested with the ResearchSpace Docker image researchspace/platform-ci:metapolis-v1.0.0
+# (set RESEARCHSPACE_IMAGE to it in researchspace-docker-compose's .env).
+#
 #   ./setup.sh                          # PostGIS (default)
 #   ./setup.sh --backend qlever         # QLever SPARQL endpoint with GeoSPARQL data
 #   ./setup.sh --backend sparql --endpoint https://example.org/sparql
@@ -17,6 +20,8 @@ set -euo pipefail
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_CONFIG="$APP_DIR/config/repositories/metapolis.ttl"
 SETUP_REPO_URL="https://github.com/villaitatti/metapolis_setup.git"
+# ResearchSpace Docker image this version of Metapolis is tested with.
+RS_IMAGE="researchspace/platform-ci:metapolis-v1.0.0"
 
 BACKEND="postgis"
 SETUP_DIR="$(dirname "$APP_DIR")/metapolis_setup"
@@ -49,7 +54,8 @@ Options:
   --no-start            Prepare files only, do not start any container
   -h, --help            Show this help
 
-ResearchSpace (optional, needs a running instance with the app loaded):
+ResearchSpace (optional, needs a running instance with the app loaded).
+Recommended image: $RS_IMAGE
   --rs-url URL          e.g. http://localhost:10214. Adds 'metapolis' to the
                         Ephedra federation and imports the ontology and entity
                         configurations through the REST API.
@@ -358,12 +364,35 @@ configure_researchspace() {
 
 [ -n "$RS_URL" ] && configure_researchspace
 
-# ---------------------------------------------------------- 4. next steps ---
+# --------------------------------------------- 4. check the RS image ---
+
+# Image of the running ResearchSpace container, if any (empty when Docker is
+# not available or ResearchSpace does not run in Docker).
+running_rs_images() {
+  command -v docker >/dev/null 2>&1 || return 0
+  docker ps --format '{{.Image}}' 2>/dev/null | grep -E '^(docker\.io/)?researchspace/(platform|researchspace)' | sort -u || true
+}
+
+RS_IMAGE_OK=1
+RUNNING_IMAGES="$(running_rs_images)"
+if [ -n "$RUNNING_IMAGES" ]; then
+  if grep -qxE "(docker\.io/)?${RS_IMAGE}" <<<"$RUNNING_IMAGES"; then
+    ok "ResearchSpace runs the recommended image $RS_IMAGE"
+  else
+    RS_IMAGE_OK=0
+    warn "ResearchSpace runs $(tr '\n' ' ' <<<"$RUNNING_IMAGES")but Metapolis is tested with $RS_IMAGE."
+  fi
+fi
+
+# ---------------------------------------------------------- 5. next steps ---
 
 step=1
 next() { printf '  %d. %s\n' "$step" "$1"; step=$((step + 1)); }
 
 printf '\n\033[32mMetapolis backend ready (%s).\033[0m\n\nRemaining steps in ResearchSpace:\n' "$BACKEND"
+if [ "$RS_IMAGE_OK" -eq 0 ] || [ -z "$RUNNING_IMAGES" ]; then
+  next "Run ResearchSpace with the image $RS_IMAGE (RESEARCHSPACE_IMAGE in researchspace-docker-compose's .env)."
+fi
 next "Add this folder as an app (if not done yet): $APP_DIR"
 next "Restart ResearchSpace so it picks up config/repositories/metapolis.ttl."
 if [ "$FEDERATION_DONE" -eq 0 ]; then

@@ -16,6 +16,12 @@ With Metapolis you can:
 
 Requirements: **ResearchSpace 4.0+**, **Docker** with Docker Compose, **Git**, **Bash** and **curl**.
 
+This version of Metapolis is tested with the ResearchSpace Docker image [`researchspace/platform-ci:metapolis-v1.0.0`](https://hub.docker.com/r/researchspace/platform-ci/tags?name=metapolis-v1.0.0). With [researchspace-docker-compose](https://github.com/researchspace/researchspace-docker-compose), set it in `.env`:
+
+```bash
+RESEARCHSPACE_IMAGE=researchspace/platform-ci:metapolis-v1.0.0
+```
+
 ```bash
 git clone https://github.com/villaitatti/metapolis.git
 cd metapolis

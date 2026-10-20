@@ -26,7 +26,7 @@ This page explains how to install Metapolis in a ResearchSpace instance, either 
 
 ## Prerequisites
 
-- **ResearchSpace 4.0 or later**, installed and running. It can run on a [server](https://github.com/researchspace/researchspace-docker-compose) or on your [local machine](https://github.com/researchspace/researchspace); by default it is available at `http://localhost:10214`. No special Docker image or branch is needed: the map components are part of ResearchSpace core.
+- **ResearchSpace 4.0 or later**, installed and running. It can run on a [server](https://github.com/researchspace/researchspace-docker-compose) or on your [local machine](https://github.com/researchspace/researchspace); by default it is available at `http://localhost:10214`. The map components are part of ResearchSpace core; this version of Metapolis is tested with the Docker image [`researchspace/platform-ci:metapolis-v1.0.0`](https://hub.docker.com/r/researchspace/platform-ci/tags?name=metapolis-v1.0.0), built from the [`build-docker/metapolis-v1.0.0`](https://github.com/researchspace/researchspace/tree/build-docker/metapolis-v1.0.0) branch.
 - **Docker** and **Docker Compose** ([installation guide](https://docs.docker.com/engine/install/))
 - **Git**, **Bash** and **curl** (for `setup.sh`)
 - Optional: **QGIS** or another GIS tool, to prepare geometries
@@ -100,7 +100,13 @@ Follow the steps in order. Each step ends with a quick check so you know it work
 
 ### Step 1: Install ResearchSpace and add the Metapolis app
 
-1. Install ResearchSpace 4.0+ following the [official instructions](https://github.com/researchspace/researchspace) and start it.
+1. Install ResearchSpace 4.0+ following the [official instructions](https://github.com/researchspace/researchspace) and start it. With [researchspace-docker-compose](https://github.com/researchspace/researchspace-docker-compose), use the tested image by setting in `.env`:
+
+   ```bash
+   RESEARCHSPACE_IMAGE=researchspace/platform-ci:metapolis-v1.0.0
+   ```
+
+   `setup.sh` warns if the running ResearchSpace container uses a different image.
 2. Clone both Metapolis repositories:
 
    ```bash

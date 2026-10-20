@@ -63,7 +63,7 @@ The map components themselves (`semantic-map-advanced`, `semantic-map-controls`)
 
 ## Quick start
 
-Prerequisites: **ResearchSpace 4.0+** running, **Docker** with Docker Compose, **Git**, **Bash** and **curl**.
+Prerequisites: **ResearchSpace 4.0+** running (tested image: [`researchspace/platform-ci:metapolis-v1.0.0`](https://hub.docker.com/r/researchspace/platform-ci/tags?name=metapolis-v1.0.0)), **Docker** with Docker Compose, **Git**, **Bash** and **curl**.
 
 ```bash
 git clone https://github.com/villaitatti/metapolis.git
