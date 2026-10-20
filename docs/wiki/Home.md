@@ -1,6 +1,6 @@
-# Metapolis Wiki
-
 **Metapolis: Spatializing Histories through Archival Sources** is a [ResearchSpace](https://github.com/researchspace/researchspace) app for describing historical buildings, events, people and sources, and placing them on an interactive map.
+
+It lets scholars geospatially reconstruct places through time: archival, bibliographic and multimedia sources are linked to interpretive research and visualized on a map. Because it runs on ResearchSpace, all data is Linked Open Data and can be enriched with external knowledge bases such as VIAF, Wikidata, OCLC and the Getty vocabularies.
 
 Metapolis lets researchers:
 
@@ -9,18 +9,24 @@ Metapolis lets researchers:
 - show the footprints on an **interactive map** with styling by function, a timeline, spyglass/swipe comparison and a 3D view;
 - query the geodata with **SPARQL**, even when it lives in a relational PostGIS database.
 
-## Table of contents
+## Contents
 
 | Page | What it covers |
 |---|---|
-| **[Home](Home)** | This page: overview, architecture, quick start |
-| **[Installation and Setup](Installation-and-Setup)** | Installing the app with `setup.sh` or by hand, the Ephedra federation, importing the configuration, checks and troubleshooting |
-| **[SQL Sail integration](SQL-Sail-integration)** | How the SQL Sail turns SQL queries into SPARQL results, the Metapolis service descriptor and the predefined queries |
-| **[QLever and SPARQL backends](QLever-and-SPARQL-Backends)** | Using the bundled QLever endpoint, or any SPARQL endpoint, instead of PostGIS |
-| **[Data Model and Forms](Data-Model-and-Forms)** | Ontology, entity configurations, Knowledge Patterns, the four forms and how a Building is linked to its geometry |
-| **[Metapolis Relations System Documentation](Metapolis-Relations-System-Documentation)** | How relations between entities are stored and edited, and how to extend them |
-| **[Implementing SemanticMapAdvanced component](Implementing-SemanticMapAdvanced-component)** | User guide: the Metapolis map page, map navigation, and how to build your own map pages |
-| **[SemanticMapAdvanced Technical Specification](SemanticMapAdvanced-Technical-Specification)** | Developer reference: component architecture, props, state, events and internals |
+| **Getting started** | |
+| [Installation and Setup](Installation-and-Setup) | Installing the app with `setup.sh` or by hand, the Ephedra federation, importing the configuration, checks |
+| **Backends** | |
+| [PostGIS and SQL Sail](PostGIS-and-SQL-Sail) | The default backend: how the SQL Sail turns SQL queries into SPARQL results, the service descriptor and the predefined queries |
+| [QLever and SPARQL Backends](QLever-and-SPARQL-Backends) | Using the bundled QLever endpoint, or any SPARQL endpoint, instead of PostGIS |
+| **Data and forms** | |
+| [Data Model and Forms](Data-Model-and-Forms) | Ontology, entity configurations, Knowledge Patterns, the four forms and how a Building is linked to its geometry |
+| [Relations](Relations) | How relations between entities are stored and edited, and how to extend them |
+| **Map** | |
+| [Map Navigation](Map-Navigation) | Using the Metapolis map: moving around, selecting, styling and filtering buildings, tools, customization |
+| [Map Component Guide](Map-Component-Guide) | Building your own map pages with `semantic-map-advanced` and `semantic-map-controls` |
+| [Map Component Reference](Map-Component-Reference) | Developer reference: component architecture, props, state, events and internals |
+
+Every page has the same layout: a short introduction, related pages, a list of contents, the sections, and (where relevant) known issues and a troubleshooting table.
 
 ## How the pieces fit together
 
@@ -45,7 +51,7 @@ Ephedra federation ──SERVICE <…federation#metapolis>──▶ "metapolis" 
 
 The app never stores geometries in the triple store. It queries them live from the backend through predefined queries, and links them to semantic entities by ID (`http://metapolis.com/resource/feature/<building_id>`).
 
-PostGIS is the default backend. The `metapolis` repository can also point to a SPARQL endpoint, such as the bundled QLever setup or your own endpoint (see [QLever and SPARQL backends](QLever-and-SPARQL-Backends)). The forms and the map work the same way with any backend.
+PostGIS is the default backend. The `metapolis` repository can also point to a SPARQL endpoint, such as the bundled QLever setup or your own endpoint (see [QLever and SPARQL Backends](QLever-and-SPARQL-Backends)). The forms and the map work the same way with any backend.
 
 ## What is in the app repository
 
@@ -53,7 +59,7 @@ PostGIS is the default backend. The `metapolis` repository can also point to a S
 metapolis/
 ├── setup.sh                           # First-run setup script
 ├── plugin.properties                  # App id (metapolis) / version for ResearchSpace
-├── MAP_NAVIGATION.md                  # How to use the map
+├── docs/wiki/                         # This wiki (published by .github/workflows/publish-wiki.yml)
 ├── config/
 │   ├── namespaces.prop                # metapolis_forms, metapolis_ontology prefixes
 │   ├── repositories/metapolis.ttl     # Backend connection (PostGIS by default; rewritten by setup.sh)
@@ -96,7 +102,7 @@ Once installed:
 
 ## Getting help
 
-- Check the troubleshooting tables in [Installation and Setup](Installation-and-Setup#troubleshooting) and [Implementing SemanticMapAdvanced component](Implementing-SemanticMapAdvanced-component#troubleshooting).
+- Each page ends with a **Troubleshooting** table; start with [Installation and Setup](Installation-and-Setup#troubleshooting) and [Map Navigation](Map-Navigation#troubleshooting).
 - Validate SPARQL queries on the `/sparql` page before using them in a template.
 - Search or open an issue on [GitHub](https://github.com/villaitatti/metapolis/issues).
 
